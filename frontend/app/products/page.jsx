@@ -11,7 +11,6 @@ export default function Page() {
 
   return (
     <div className="flex h-screen w-full bg-gray-50">
-      {" "}
       {/* Fundo levemente cinza para destacar os cards brancos */}
       <Aside />
       <main className="flex-1 py-6 px-10 overflow-y-auto">
@@ -29,7 +28,7 @@ export default function Page() {
         </nav>
 
         <section>
-          <div className="flex gap-6 mb-8">
+          <div className="flex gap-6 mb-8 shadow-md">
             <div className="w-full border-b-4 border-black py-8 px-6 bg-white shadow-sm rounded-t-xl">
               <p className="text-gray-500 text-sm font-medium">
                 Total de produtos

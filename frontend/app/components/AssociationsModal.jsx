@@ -47,7 +47,7 @@ export default function AssociationsModal({ show, setShow, product }) {
             type="submit"
             className="bg-emerald-500 text-white font-bold py-3 rounded-xl mt-4 hover:bg-emerald-600 transition-colors"
           >
-            Confirmar Associação
+            Adicionar Associação
           </button>
         </form>
       </div>

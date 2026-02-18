@@ -11,61 +11,80 @@ export default function Page() {
   return (
     <div className="flex h-screen w-full">
       <Aside />
-      <main className="flex-1 py-6 px-10">
-        <nav className="flex w-full justify-between items-center">
+      <main className="flex-1 py-6 px-10 overflow-y-auto">
+        <nav className="flex w-full justify-between items-center mb-8">
           <div>
-            <h1 className="text-2xl font-bold">Fornecedores</h1>
-            <p className="text-xl">Gerencie seus fornecedores</p>
+            <h1 className="text-2xl font-bold text-gray-800">Produtos</h1>
+            <p className="text-gray-500">Gerencie seus produtos</p>
           </div>
           <button
             onClick={() => setIsModalOpen(true)}
-            className="bg-black text-white px-6 py-2 rounded-md cursor-pointer hover:bg-gray-800 transition-colors"
+            className="bg-black text-white px-6 py-2 rounded-md cursor-pointer hover:bg-gray-800 transition-colors shadow-lg"
           >
-            + Fornecedor
+            + Produto
           </button>
         </nav>
         <section>
-          <div>
-            {/* Quantidade de clientes */}
-            <div className="w-full border-b-2 border-[#ddd] py-8 bg-white mb-6">
-              <p className="text-gray-500">Total de Fornecedores</p>
-              <h2 className="text-3xl font-bold mt-2">1</h2>
+          {/* Quantidade de clientes */}
+          <div className="flex gap-6 mb-8 shadow-md">
+            <div className="w-full border-b-4 border-black py-8 px-6 bg-white shadow-md rounded-t-xl">
+              <p className="text-gray-500 text-sm font-medium">
+                Total de produtos
+              </p>
+              <h2 className="text-3xl font-bold mt-2 text-gray-900">1</h2>
             </div>
           </div>
-          <div className="w-full border-2 border-[#ddd] rounded-xl p-8 shadow-xl bg-white">
+
+          <div className="w-full border border-gray-200 rounded-2xl shadow-md bg-white overflow-hidden">
             {/* Tabela de Fornecedores */}
-            <table className="w-full">
+            <table className="w-full border-collapse">
               <thead>
-                <tr className="text-gray-500 border-b border-gray-400">
-                  <th className="pb-4 font-medium text-left w-1/7">
+                <tr className="bg-gray-50 border-b border-gray-200">
+                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">
                     Nome da Empresa
                   </th>
-                  <th className="pb-4 font-medium text-left w-1/7">CNPJ</th>
-                  <th className="pb-4 font-medium text-left w-1/7">Endereço</th>
-                  <th className="pb-4 font-medium text-left w-1/7">Telefone</th>
-                  <th className="pb-4 font-medium text-left w-1/7">E-mail</th>
-                  <th className="pb-4 font-medium text-left w-1/7">
+                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">
+                    CNPJ
+                  </th>
+                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">
+                    Endereço
+                  </th>
+                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">
+                    Telefone
+                  </th>
+                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">
+                    E-mail
+                  </th>
+                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">
                     Contato Principal
                   </th>
-                  <th className="pb-4 text-right">Ações</th>
+                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-right">
+                    Ações
+                  </th>
                 </tr>
               </thead>
-              <tbody>
-                <tr className="group">
-                  <td className="py-4 text-gray-700">Async Sincrone</td>
-                  <td className="py-4 text-gray-700">45.923.012/0001-84</td>
-                  <td className="py-4 text-gray-700">
+              <tbody className="divide-y divide-gray-100">
+                <tr className="group hover:bg-gray-50 transition-colors">
+                  <td className="px-6 py-4 text-gray-700 font-medium">
+                    Async Sincrone
+                  </td>
+                  <td className="px-6 py-4 text-gray-500 font-mono text-sm">
+                    45.923.012/0001-84
+                  </td>
+                  <td className="px-6 py-4 text-gray-500 text-sm max-w-xs truncate">
                     Rua 123, Bairro, Cidade-Estado, CEP 12345-678
                   </td>
-                  <td className="py-4 text-gray-700">(92) 999412-5214</td>
-                  <td className="py-4 text-gray-700">Email@gmail.com</td>
-                  <td className="py-4 text-gray-700">(92) 999412-5214</td>
-                  <td className="py-4">
-                    <div className="flex items-center justify-end gap-4">
-                      <button className="bg-black text-white px-4 py-1.5 rounded-xl text-sm font-light hover:bg-gray-800 transition-colors">
+                  <td className="px-6 py-4 text-gray-700">(92) 999412-5214</td>
+                  <td className="px-6 py-4 text-gray-700">Email@gmail.com</td>
+                  <td className="px-6 py-4 text-gray-700">
+                    João Carlos de Nobrega
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center justify-end gap-3">
+                      <button className="bg-black text-white px-4 py-1.5 rounded-xl text-xs font-medium hover:bg-gray-800 transition-all active:scale-95 shadow-sm">
                         Editar dados
                       </button>
-                      <button className="text-gray-800 hover:text-red-600 transition-colors cursor-pointer">
+                      <button className="text-gray-400 hover:text-red-600 transition-colors p-2">
                         <FaTrash size={20} />
                       </button>
                     </div>

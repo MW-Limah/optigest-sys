@@ -46,7 +46,7 @@ export default function SuppliersModal({ show, setShow }) {
           <input
             className="border-1 p-2 rounded-md border-[#ccc]"
             type="text"
-            placeholder="Contato Principal"
+            placeholder="Contato Principal. Ex: João Carlos"
           />
         </form>
         <button

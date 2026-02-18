@@ -1,6 +1,12 @@
-FACULDADE GRAN (https://faculdade.grancursosonline.com.br/)
+### FACULDADE GRAN (https://faculdade.grancursosonline.com.br/)
 
-Projeto na Disciplina Projeto Integrador - Gestão de Estoque
+#### Projeto na Disciplina Projeto Integrador - Gestão de Estoque
+
+### InvsysCo
+
+- Frontend baseado em React.js no framework Next.js
+- Backend baseado em Nest.js
+- Banco de dados pelo Supabase (PostgreSQL)
 
 Controladores
 
@@ -13,3 +19,5 @@ Controladores
 3. Controlador de Associação Produto/Fornecedor:
    Este é um controlador especializado que lida com a relação entre produtos e fornecedores.
    O controlador de associação permite associar um produto a um fornecedor, desassociá-los e consultar quais produtos são fornecidos por um determinado fornecedor (e vice-versa).
+
+Link do app no Replit.com - [Visite o Projeto](http://localhost:3000)

@@ -21,3 +21,41 @@ Controladores
    O controlador de associação permite associar um produto a um fornecedor, desassociá-los e consultar quais produtos são fornecidos por um determinado fornecedor (e vice-versa).
 
 Link do app no Replit.com - [Visite o Projeto](http://localhost:3000)
+
+Banco de dados
+
+#### 1. Tabela 'products'
+
+| Column          | Type                                |
+| --------------- | ----------------------------------- |
+| id              | SERIAL (PK)                         |
+| name            | VARCHAR(150) NOT NULL               |
+| cod_ean         | VARCHAR(20) UNIQUE                  |
+| description     | TEXT                                |
+| expiration_date | DATE                                |
+| active          | BOOLEAN DEFAULT TRUE                |
+| created_at      | TIMESTAMP DEFAULT CURRENT_TIMESTAMP |
+| updated_at      | TIMESTAMP DEFAULT CURRENT_TIMESTAMP |
+
+#### 2. Tabela 'suppliers'
+
+| Column          | Type                                |
+| --------------- | ----------------------------------- |
+| id              | SERIAL (PK)                         |
+| name_enterprise | VARCHAR(150) NOT NULL               |
+| cnpj            | VARCHAR(18) UNIQUE                  |
+| email           | VARCHAR(150)                        |
+| phone           | VARCHAR(30)                         |
+| active          | BOOLEAN DEFAULT TRUE                |
+| created_at      | TIMESTAMP DEFAULT CURRENT_TIMESTAMP |
+| updated_at      | TIMESTAMP DEFAULT CURRENT_TIMESTAMP |
+
+#### 3. Tabela 'product_suppliers'
+
+| Column            | Type                    |
+| ----------------- | ----------------------- |
+| product_id        | INT (FK → product.id)   |
+| supplier_id       | INT (FK → suppliers.id) |
+| purchase_price    | DECIMAL(10,2)           |
+| lead_time_days    | INT                     |
+| minimum_order_qty | INT                     |

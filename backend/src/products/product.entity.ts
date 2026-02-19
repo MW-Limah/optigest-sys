@@ -20,6 +20,12 @@ export class Product {
   @Column('text')
   description: string;
 
+  @Column('text', { nullable: true })
+  category: string;
+
+  @Column('int')
+  stock: number;
+
   @Column({ type: 'date', nullable: true })
   expiration_date: Date;
 

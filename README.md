@@ -32,6 +32,7 @@ Banco de dados
 | name            | VARCHAR(150) NOT NULL               |
 | cod_ean         | VARCHAR(20) UNIQUE                  |
 | description     | TEXT                                |
+| category        | TEXT                                |
 | expiration_date | DATE                                |
 | active          | BOOLEAN DEFAULT TRUE                |
 | created_at      | TIMESTAMP DEFAULT CURRENT_TIMESTAMP |

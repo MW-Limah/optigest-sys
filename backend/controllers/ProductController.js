@@ -43,6 +43,25 @@ const ProductController = {
       res.json(row);
     });
   },
+
+  // Excluir um produto
+  async destroy(req, res) {
+    const { id } = req.params;
+    const sql = "DELETE FROM products WHERE id = ?";
+
+    db.run(sql, [id], function (err) {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+
+      // 'this.changes' indica quantas linhas foram afetadas
+      if (this.changes === 0) {
+        return res.status(404).json({ message: "Produto não encontrado" });
+      }
+
+      res.json({ message: "Produto deletado com sucesso", id });
+    });
+  },
 };
 
 module.exports = ProductController;

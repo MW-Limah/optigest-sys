@@ -27,6 +27,30 @@ export default function Page() {
     fetchProducts();
   }, []);
 
+  // Delete
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Tem certeza que deseja excluir este produto?")) return;
+
+    try {
+      const response = await fetch(`http://localhost:3001/products/${id}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        alert("Produto removido!");
+        // DICA: Aqui você deve atualizar seu estado local para
+        // remover o item da tela sem precisar dar F5
+        setProducts((prev) => prev.filter((product) => product.id !== id));
+      } else {
+        const data = await response.json();
+        alert(`Erro: ${data.message}`);
+      }
+    } catch (error) {
+      console.error("Erro ao deletar:", error);
+    }
+  };
+
   return (
     <div className="flex h-screen w-full bg-gray-50">
       <Aside />
@@ -133,7 +157,10 @@ export default function Page() {
                         <button className="bg-black text-white px-4 py-1.5 rounded-xl text-xs font-medium hover:bg-gray-800 transition-all active:scale-95 shadow-sm">
                           Editar
                         </button>
-                        <button className="text-gray-400 hover:text-red-600 transition-colors p-2">
+                        <button
+                          onClick={() => handleDelete(product.id)}
+                          className="text-gray-400 hover:text-red-600 transition-colors p-2"
+                        >
                           <FaTrash size={18} />
                         </button>
                       </div>

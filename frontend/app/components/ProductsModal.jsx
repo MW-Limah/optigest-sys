@@ -4,7 +4,55 @@ import { MdClose } from "react-icons/md";
 /* Passe parametros props como objeto */
 export default function ProductsModal({ show, setShow }) {
   const [category, setCategory] = useState("");
+
+  // 1. Implementando método POST pelo Frontend, Estados para campo
+  const [formData, setFormData] = useState({
+    name: "",
+    cod_bar: "",
+    description: "",
+    quantity: "",
+    category: "",
+    expiration_date: "",
+    image: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+
   if (!show) return null;
+
+  // 2. Função para enviar dados
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const response = await fetch("http://localhost:3001/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMessage("Produto cadastrado com sucesso!");
+        setTimeout(() => setShow(false), 2000); // fecha modal após sucesso
+      } else {
+        setMessage(`Erro: ${data.error}`);
+      }
+    } catch (error) {
+      setMessage("Erro ao conectar com o servidor.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 3. Helper para atualizar o objeto de estado
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
@@ -20,68 +68,82 @@ export default function ProductsModal({ show, setShow }) {
             <MdClose />
           </button>
         </div>
-        <form className="flex flex-col gap-4">
+
+        {/* Submit */}
+
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
+            name="name"
+            onChange={handleChange}
             className="border-1 p-2 rounded-md border-[#ccc]"
             type="text"
             placeholder="Insira o Nome do Produto"
+            required
           />
           <input
+            name="cod_bar"
+            onChange={handleChange}
             type="number"
             placeholder="Insira o Código de Barras"
-            className="border p-2 rounded-md border-[#ccc] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            className="border p-2 rounded-md border-[#ccc]"
+            required
           />
-          {/* Limitar a 100 letras */}
           <input
+            name="description"
+            onChange={handleChange}
+            maxLength={100}
             className="border-1 p-2 rounded-md border-[#ccc]"
             type="text"
             placeholder="Descreva brevemente o produto"
           />
           <input
+            name="quantity"
+            onChange={handleChange}
             className="border-1 p-2 rounded-md border-[#ccc]"
             type="number"
-            placeholder="Insira a Quantidade em Estoque"
+            placeholder="Quantidade em Estoque"
+            required
           />
+
           <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
+            name="category"
+            value={formData.category}
+            onChange={handleChange}
             className="border p-2 rounded-md border-[#ccc] bg-white"
+            required
           >
             <option value="" disabled>
               Selecione uma categoria
             </option>
             <option value="eletronics">Eletrônicos</option>
             <option value="food">Alimentos</option>
-            <option value="clothing">Vestuário</option>
-            <option value="cosmetics">Cosméticos</option>
             <option value="others">Outros</option>
           </select>
 
-          {category === "others" && (
-            <input
-              className="border p-2 rounded-md border-emerald-400 bg-emerald-50 animate-in fade-in zoom-in duration-200"
-              type="text"
-              placeholder="Qual a outra categoria?"
-              autoFocus
-            />
-          )}
-
           <input
+            name="expiration_date"
+            onChange={handleChange}
             className="border-1 p-2 rounded-md border-[#ccc]"
             type="date"
-            placeholder="Insira a Data de Validade (se aplicável)"
           />
-          <input
-            className="border-1 p-2 rounded-md border-[#ccc]"
-            type="file"
-            placeholder="Insira a Imagem do Produto (se aplicável)"
-          />
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="bg-emerald-500 rounded-xl font-bold py-3 w-[200px] self-center text-white hover:bg-emerald-400 disabled:bg-gray-400 transition-colors"
+          >
+            {loading ? "Enviando..." : "Cadastrar Produto"}
+          </button>
         </form>
-        <button className="bg-emerald-500 rounded-xl font-bold py-3 w-[200px] self-center text-white hover:bg-emerald-400 transition-colors cursor-pointer">
-          Cadastrar Produto
-        </button>
+
         {/* Renderizar mensagem de erro/sucesso dinamicamente */}
-        <p>Erro: teste</p>
+        {message && (
+          <p
+            className={`text-center mt-2 ${message.includes("Erro") ? "text-red-500" : "text-emerald-600"}`}
+          >
+            {message}
+          </p>
+        )}
       </div>
     </div>
   );

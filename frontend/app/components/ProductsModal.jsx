@@ -30,9 +30,16 @@ export default function ProductsModal({
   // 2. Efeito para carregar os dados no formulário quando for edição
   useEffect(() => {
     if (editingProduct) {
-      setFormData(editingProduct);
+      setFormData({
+        name: editingProduct.name || "",
+        cod_bar: editingProduct.cod_bar || "",
+        description: editingProduct.description || "",
+        quantity: editingProduct.quantity || "",
+        category: editingProduct.category || "",
+        expiration_date: editingProduct.expiration_date || "",
+        image: editingProduct.image || "",
+      });
     } else {
-      // Reseta o formulário se for um novo produto
       setFormData({
         name: "",
         cod_bar: "",
@@ -44,7 +51,6 @@ export default function ProductsModal({
       });
     }
   }, [editingProduct, show]);
-
   if (!show) return null;
 
   const handleSubmit = async (e) => {
@@ -93,11 +99,12 @@ export default function ProductsModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
       <div className="fixed flex flex-col gap-4 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-xl shadow-lg w-[600px] h-auto border-2 border-[#ddd]">
         <div className="flex justify-between mb-2">
-          <h2 className="text-xl">Cadastro de Produto</h2>
+          <h2 className="text-xl">
+            {/* Titulo dinamico */}
+            {editingProduct ? "Editar Produto" : "Cadastrar novo Produto"}
+          </h2>
           <button
-            onClick={() => {
-              setShow(false);
-            }}
+            onClick={handleClose}
             className="self-end text-2xl text-gray-500 hover:text-gray-800 transition-colors cursor-pointer"
           >
             <MdClose />
@@ -109,6 +116,7 @@ export default function ProductsModal({
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
             name="name"
+            value={formData.name}
             onChange={handleChange}
             className="border-1 p-2 rounded-md border-[#ccc]"
             type="text"
@@ -117,6 +125,7 @@ export default function ProductsModal({
           />
           <input
             name="cod_bar"
+            value={formData.cod_bar}
             onChange={handleChange}
             type="number"
             placeholder="Insira o Código de Barras"
@@ -125,6 +134,7 @@ export default function ProductsModal({
           />
           <input
             name="description"
+            value={formData.description}
             onChange={handleChange}
             maxLength={100}
             className="border-1 p-2 rounded-md border-[#ccc]"
@@ -133,6 +143,7 @@ export default function ProductsModal({
           />
           <input
             name="quantity"
+            value={formData.quantity}
             onChange={handleChange}
             className="border-1 p-2 rounded-md border-[#ccc]"
             type="number"
@@ -142,7 +153,7 @@ export default function ProductsModal({
 
           <select
             name="category"
-            value={formData.category}
+            value={formData.quantity}
             onChange={handleChange}
             className="border p-2 rounded-md border-[#ccc] bg-white"
             required
@@ -157,6 +168,7 @@ export default function ProductsModal({
 
           <input
             name="expiration_date"
+            value={formData.expiration_date}
             onChange={handleChange}
             className="border-1 p-2 rounded-md border-[#ccc]"
             type="date"
@@ -167,7 +179,11 @@ export default function ProductsModal({
             disabled={loading}
             className="bg-emerald-500 rounded-xl font-bold py-3 w-[200px] self-center text-white hover:bg-emerald-400 disabled:bg-gray-400 transition-colors"
           >
-            {loading ? "Enviando..." : "Cadastrar Produto"}
+            {loading
+              ? "Enviando..."
+              : editingProduct
+                ? "Atualizar Produto"
+                : "Cadastrar Produto"}
           </button>
         </form>
 

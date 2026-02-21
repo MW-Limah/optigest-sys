@@ -68,23 +68,16 @@ export default function Page() {
             <h1 className="text-2xl font-bold text-gray-800">Produtos</h1>
             <p className="text-gray-500">Gerencie seus produtos</p>
           </div>
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="bg-black text-white px-6 py-2 rounded-md hover:bg-gray-800 transition-colors shadow-lg"
-          >
+          <button onClick={() => setIsModalOpen(true)} className="bg-black text-white px-6 py-2 rounded-md hover:bg-gray-800 transition-colors shadow-lg">
             + Produto
           </button>
         </nav>
         <section>
           <div className="flex gap-6 mb-8 shadow-md">
             <div className="w-full border-b-4 border-black py-8 px-6 bg-white shadow-sm rounded-t-xl">
-              <p className="text-gray-500 text-sm font-medium">
-                Total de produtos
-              </p>
+              <p className="text-gray-500 text-sm font-medium">Total de produtos</p>
               {/* 5. Contador dinâmico */}
-              <h2 className="text-3xl font-bold mt-2 text-gray-900">
-                {products.length}
-              </h2>
+              <h2 className="text-3xl font-bold mt-2 text-gray-900">{products.length}</h2>
             </div>
           </div>
 
@@ -92,71 +85,31 @@ export default function Page() {
             <table className="w-full border-collapse">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-200">
-                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">
-                    Nome
-                  </th>
-                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">
-                    Código
-                  </th>
-                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">
-                    Descrição
-                  </th>
-                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">
-                    Estoque
-                  </th>
-                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">
-                    Categoria
-                  </th>
-                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">
-                    Validade
-                  </th>
-                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">
-                    Foto
-                  </th>
-                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-right">
-                    Ações
-                  </th>
+                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">Nome</th>
+                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">Código</th>
+                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">Descrição</th>
+                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">Estoque</th>
+                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">Categoria</th>
+                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">Validade</th>
+                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">Foto</th>
+                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-right">Ações</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
                 {/* 6. Mapeamento dos produtos vindos do banco */}
                 {products.map((product) => (
-                  <tr
-                    key={product.id}
-                    className="group hover:bg-gray-50 transition-colors"
-                  >
-                    <td className="px-6 py-4 text-gray-700 font-medium">
-                      {product.name}
-                    </td>
-                    <td className="px-6 py-4 text-gray-500 font-mono text-sm">
-                      {product.cod_bar}
-                    </td>
-                    <td className="px-6 py-4 text-gray-500 text-sm max-w-xs truncate">
-                      {product.description}
-                    </td>
-                    <td className="px-6 py-4 text-gray-700">
-                      {product.quantity}
-                    </td>
+                  <tr key={product.id} className="group hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-4 text-gray-700 font-medium">{product.name}</td>
+                    <td className="px-6 py-4 text-gray-500 font-mono text-sm">{product.cod_bar}</td>
+                    <td className="px-6 py-4 text-gray-500 text-sm max-w-xs truncate">{product.description}</td>
+                    <td className="px-6 py-4 text-gray-700">{product.quantity}</td>
                     <td className="px-6 py-4">
-                      <span className="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-xs font-bold">
-                        {product.category}
-                      </span>
+                      <span className="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-xs font-bold">{product.category}</span>
                     </td>
-                    <td className="px-6 py-4 text-gray-500">
-                      {product.expiration_date || "-"}
-                    </td>
+                    <td className="px-6 py-4 text-gray-500">{product.expiration_date || "-"}</td>
                     <td className="px-6 py-4">
                       <div className="relative w-12 h-12 rounded-lg overflow-hidden border border-gray-200">
-                        <Image
-                          src={
-                            product.image
-                              ? `data:image/jpeg;base64,${product.image}`
-                              : "/bege.jpg"
-                          }
-                          fill
-                          className="object-cover"
-                          alt={product.name}
-                        />
+                        <Image src={product.image ? `http://localhost:3001/uploads/${product.image}` : "/placeholder.jpg"} alt={product.name} fill className="object-cover" />
                       </div>
                     </td>
                     <td className="px-6 py-4 text-right">
@@ -169,10 +122,7 @@ export default function Page() {
                         >
                           Editar
                         </button>
-                        <button
-                          onClick={() => handleDelete(product.id)}
-                          className="text-gray-400 hover:text-red-600 transition-colors p-2"
-                        >
+                        <button onClick={() => handleDelete(product.id)} className="text-gray-400 hover:text-red-600 transition-colors p-2">
                           <FaTrash size={18} />
                         </button>
                       </div>

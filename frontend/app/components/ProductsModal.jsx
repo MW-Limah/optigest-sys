@@ -15,6 +15,12 @@ export default function ProductsModal({ show, setShow, onProductAdded, editingPr
     image: "",
   });
 
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
+
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -48,38 +54,58 @@ export default function ProductsModal({ show, setShow, onProductAdded, editingPr
   if (!show) return null;
 
   // ✅ Submit
+  // ✅ Submit Corrigido para Multipart/Form-Data
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
 
+    // 1. Criamos o FormData (necessário para arquivos binários)
+    const data = new FormData();
+
+    // 2. Adicionamos os campos textuais
+    data.append("name", formData.name);
+    data.append("cod_bar", formData.cod_bar);
+    data.append("description", formData.description);
+    data.append("quantity", formData.quantity);
+
+    // Lógica de categoria (mesma que você usou no payload)
+    const finalCategory = formData.category === "others" ? formData.other_category : formData.category;
+    data.append("category", finalCategory);
+
+    data.append("expiration_date", formData.expiration_date);
+
+    // 3. Adicionamos a imagem se ela existir
+    if (selectedFile) {
+      data.append("image", selectedFile); // Corrigido de 'appped' para 'append'
+    }
+
     const isEditing = !!editingProduct;
-
-    // ✅ Payload corrigido
-    const payload = {
-      ...formData,
-      category: formData.category === "others" ? formData.other_category : formData.category,
-    };
-
     const url = isEditing ? `http://localhost:3001/products/${editingProduct.id}` : `http://localhost:3001/products`;
 
     const method = isEditing ? "PUT" : "POST";
 
     try {
       const response = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload), // ✅ agora usa payload
+        method: method,
+        // ⚠️ IMPORTANTE: NÃO defina 'Content-Type' aqui.
+        // O navegador definirá automaticamente como 'multipart/form-data' com o boundary correto.
+        body: data,
       });
 
       if (response.ok) {
         setMessage(isEditing ? "Produto atualizado com sucesso!" : "Produto cadastrado com sucesso!");
-
         onProductAdded();
-        handleClose();
+
+        // Limpar o arquivo selecionado após sucesso
+        setSelectedFile(null);
+
+        setTimeout(() => {
+          handleClose();
+        }, 1500);
       } else {
-        const data = await response.json();
-        setMessage(`Erro: ${data.message || data.error}`);
+        const errorData = await response.json();
+        setMessage(`Erro: ${errorData.message || errorData.error}`);
       }
     } catch (error) {
       console.error("Erro na operação:", error);
@@ -128,13 +154,45 @@ export default function ProductsModal({ show, setShow, onProductAdded, editingPr
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <input name="name" value={formData.name} onChange={handleChange} className="border p-2 rounded-md border-[#ccc]" type="text" placeholder="Insira o Nome do Produto" required />
+          <input
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            className="border p-2 rounded-md border-[#ccc]"
+            type="text"
+            placeholder="Insira o Nome do Produto"
+            required
+          />
 
-          <input name="cod_bar" value={formData.cod_bar} onChange={handleChange} type="number" placeholder="Insira o Código de Barras" className="border p-2 rounded-md border-[#ccc]" required />
+          <input
+            name="cod_bar"
+            value={formData.cod_bar}
+            onChange={handleChange}
+            type="number"
+            placeholder="Insira o Código de Barras"
+            className="border p-2 rounded-md border-[#ccc]"
+            required
+          />
 
-          <input name="description" value={formData.description} onChange={handleChange} maxLength={100} className="border p-2 rounded-md border-[#ccc]" type="text" placeholder="Descreva brevemente o produto" />
+          <input
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            maxLength={100}
+            className="border p-2 rounded-md border-[#ccc]"
+            type="text"
+            placeholder="Descreva brevemente o produto"
+          />
 
-          <input name="quantity" value={formData.quantity} onChange={handleChange} className="border p-2 rounded-md border-[#ccc]" type="number" placeholder="Quantidade em Estoque" required />
+          <input
+            name="quantity"
+            value={formData.quantity}
+            onChange={handleChange}
+            className="border p-2 rounded-md border-[#ccc]"
+            type="number"
+            placeholder="Quantidade em Estoque"
+            required
+          />
 
           <select name="category" value={formData.category} onChange={handleChange} className="border p-2 rounded-md border-[#ccc] bg-white" required>
             <option value="" disabled>
@@ -147,9 +205,28 @@ export default function ProductsModal({ show, setShow, onProductAdded, editingPr
           </select>
 
           {/* ✅ Campo condicional */}
-          {formData.category === "others" && <input name="other_category" value={formData.other_category} onChange={handleChange} type="text" placeholder="Qual a outra categoria?" className="border p-2 rounded-md border-[#ccc]" required autoFocus />}
+          {formData.category === "others" && (
+            <input
+              name="other_category"
+              value={formData.other_category}
+              onChange={handleChange}
+              type="text"
+              placeholder="Qual a outra categoria?"
+              className="border p-2 rounded-md border-[#ccc]"
+              required
+              autoFocus
+            />
+          )}
 
           <input name="expiration_date" value={formData.expiration_date} onChange={handleChange} className="border p-2 rounded-md border-[#ccc]" type="date" />
+
+          <input
+            name="image"
+            type="file"
+            accept="image/*" // Aceita apenas imagens
+            onChange={handleFileChange}
+            className="border p-2 rounded-md border-[#ccc] file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"
+          />
 
           <button
             type="submit"

@@ -1,33 +1,31 @@
 const { Router } = require("express");
 const ProductController = require("./controllers/ProductController");
 const routes = Router();
-
-// Configuração para salvar uma imagem real
 const multer = require("multer");
 const path = require("path");
 
+// Configuração do Storage
 const storage = multer.diskStorage({
-  // Salvar na pasta uploads
   destination: (req, file, cb) => {
     cb(null, "uploads/");
   },
-  // nome = data + nome original // Adicionar funções regex no frontend para normalizar
   filename: (req, file, cb) => {
-    cd(null, Date.now() + path.extname(file.originalname));
+    // CORRIGIDO: Era 'cd', o correto é 'cb'
+    cb(null, Date.now() + path.extname(file.originalname));
   },
 });
 
-const upload = multer({ storage });
+// CORRIGIDO: Agora usamos o 'storage' configurado acima
+const upload = multer({ storage: storage });
 
-// Define as rotas chamando as funções do Controller
+// Rotas de busca e deleção (sem alteração)
 routes.get("/products", ProductController.index);
 routes.get("/products/:id", ProductController.show);
-routes.post("/products", ProductController.store);
 routes.delete("/products/:id", ProductController.destroy);
-routes.put("/products/:id", ProductController.update);
 
-// post e put de imagens
+// CORRIGIDO: Mantenha APENAS as versões com upload.single
+// Remova as linhas antigas que não tinham o middleware do multer
 routes.post("/products", upload.single("image"), ProductController.store);
-routes.post("/products/:id", upload.single("image"), ProductController.update);
+routes.put("/products/:id", upload.single("image"), ProductController.update);
 
 module.exports = routes;

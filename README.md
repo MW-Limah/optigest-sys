@@ -28,11 +28,11 @@ Banco de dados
 
 | Column          | Type                                |
 | --------------- | ----------------------------------- |
-| id              | SERIAL (PK)                         |
+| id              | INTEGER (PK) AUTOINCREMENT          |
 | name            | TEXT NOT NULL                       |
-| cod_bar         | TEXT NOT NULL                       |
+| cod_bar         | TEXT UNIQUE NOT NULL                |
 | description     | TEXT NOT NULL                       |
-| quantity        | INT                                 |
+| quantity        | INTEGER                             |
 | category        | TEXT NOT NULL                       |
 | expiration_date | DATE                                |
 | image           | BLOB                                |
@@ -43,21 +43,25 @@ Banco de dados
 
 | Column          | Type                                |
 | --------------- | ----------------------------------- |
-| id              | SERIAL (PK)                         |
-| name_enterprise | VARCHAR(150) NOT NULL               |
-| cnpj            | VARCHAR(18) UNIQUE                  |
-| email           | VARCHAR(150)                        |
-| phone           | VARCHAR(30)                         |
-| active          | BOOLEAN DEFAULT TRUE                |
+| id              | INTEGER (PK) AUTOINCREMENT          |
+| name_enterprise | TEXT NOT NULL                       |
+| cnpj            | TEXT UNIQUE NOT NULL                |
+| address         | TEXT NOT NULL                       |
+| phone           | TEXT NOT NULL                       |
+| email           | TEXT NOT NULL                       |
+| main_contact    | TEXT NOT NULL                       |
 | created_at      | TIMESTAMP DEFAULT CURRENT_TIMESTAMP |
 | updated_at      | TIMESTAMP DEFAULT CURRENT_TIMESTAMP |
 
 #### 3. Tabela 'product_suppliers'
 
-| Column            | Type                    |
-| ----------------- | ----------------------- |
-| product_id        | INT (FK → product.id)   |
-| supplier_id       | INT (FK → suppliers.id) |
-| purchase_price    | DECIMAL(10,2)           |
-| lead_time_days    | INT                     |
-| minimum_order_qty | INT                     |
+| Column      | Type                                  |
+| ----------- | ------------------------------------- |
+| id          | INTEGER (PK) AUTOINCREMENT            |
+| product_id  | INTEGER NOT NULL (FK -> products.id)  |
+| supplier_id | INTEGER NOT NULL (FK -> suppliers.id) |
+
+UNIQUE (product_id, supplier_id)
+
+| created_at | TIMESTAMP DEFAULT CURRENT_TIMESTAMP |
+| updated_at | TIMESTAMP DEFAULT CURRENT_TIMESTAMP |

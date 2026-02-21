@@ -19,4 +19,19 @@ db.serialize(() => {
 );`);
 });
 
+db.serialize(() => {
+  db.run(`
+    CREATE TABLE IF NOT EXISTS suppliers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name_enterprise TEXT NOT NULL,
+    cnpj TEXT UNIQUE NOT NULL,
+    address TEXT NOT NULL,
+    phone TEXT NOT NULL,
+    email TEXT NOT NULL,
+    main_contact TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`);
+});
+
 module.exports = db;

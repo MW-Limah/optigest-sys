@@ -3,13 +3,7 @@
 import { useState, useEffect } from "react";
 import { MdClose } from "react-icons/md";
 
-export default function ProductsModal({
-  show,
-  setShow,
-  onProductAdded,
-  editingProduct,
-  setEditingProduct,
-}) {
+export default function ProductsModal({ show, setShow, onProductAdded, editingProduct, setEditingProduct }) {
   const [formData, setFormData] = useState({
     name: "",
     cod_bar: "",
@@ -64,15 +58,10 @@ export default function ProductsModal({
     // ✅ Payload corrigido
     const payload = {
       ...formData,
-      category:
-        formData.category === "others"
-          ? formData.other_category
-          : formData.category,
+      category: formData.category === "others" ? formData.other_category : formData.category,
     };
 
-    const url = isEditing
-      ? `http://localhost:3001/products/${editingProduct.id}`
-      : `http://localhost:3001/products`;
+    const url = isEditing ? `http://localhost:3001/products/${editingProduct.id}` : `http://localhost:3001/products`;
 
     const method = isEditing ? "PUT" : "POST";
 
@@ -84,11 +73,7 @@ export default function ProductsModal({
       });
 
       if (response.ok) {
-        setMessage(
-          isEditing
-            ? "Produto atualizado com sucesso!"
-            : "Produto cadastrado com sucesso!",
-        );
+        setMessage(isEditing ? "Produto atualizado com sucesso!" : "Produto cadastrado com sucesso!");
 
         onProductAdded();
         handleClose();
@@ -135,66 +120,23 @@ export default function ProductsModal({
                       p-8 rounded-xl shadow-lg w-[600px] border-2 border-[#ddd]"
       >
         <div className="flex justify-between mb-2">
-          <h2 className="text-xl">
-            {editingProduct ? "Editar Produto" : "Cadastrar novo Produto"}
-          </h2>
+          <h2 className="text-xl">{editingProduct ? "Editar Produto" : "Cadastrar novo Produto"}</h2>
 
-          <button
-            onClick={handleClose}
-            className="text-2xl text-gray-500 hover:text-gray-800 transition-colors"
-          >
+          <button onClick={handleClose} className="text-2xl text-gray-500 hover:text-gray-800 transition-colors">
             <MdClose />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <input
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="border p-2 rounded-md border-[#ccc]"
-            type="text"
-            placeholder="Insira o Nome do Produto"
-            required
-          />
+          <input name="name" value={formData.name} onChange={handleChange} className="border p-2 rounded-md border-[#ccc]" type="text" placeholder="Insira o Nome do Produto" required />
 
-          <input
-            name="cod_bar"
-            value={formData.cod_bar}
-            onChange={handleChange}
-            type="number"
-            placeholder="Insira o Código de Barras"
-            className="border p-2 rounded-md border-[#ccc]"
-            required
-          />
+          <input name="cod_bar" value={formData.cod_bar} onChange={handleChange} type="number" placeholder="Insira o Código de Barras" className="border p-2 rounded-md border-[#ccc]" required />
 
-          <input
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            maxLength={100}
-            className="border p-2 rounded-md border-[#ccc]"
-            type="text"
-            placeholder="Descreva brevemente o produto"
-          />
+          <input name="description" value={formData.description} onChange={handleChange} maxLength={100} className="border p-2 rounded-md border-[#ccc]" type="text" placeholder="Descreva brevemente o produto" />
 
-          <input
-            name="quantity"
-            value={formData.quantity}
-            onChange={handleChange}
-            className="border p-2 rounded-md border-[#ccc]"
-            type="number"
-            placeholder="Quantidade em Estoque"
-            required
-          />
+          <input name="quantity" value={formData.quantity} onChange={handleChange} className="border p-2 rounded-md border-[#ccc]" type="number" placeholder="Quantidade em Estoque" required />
 
-          <select
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-            className="border p-2 rounded-md border-[#ccc] bg-white"
-            required
-          >
+          <select name="category" value={formData.category} onChange={handleChange} className="border p-2 rounded-md border-[#ccc] bg-white" required>
             <option value="" disabled>
               Selecione uma categoria
             </option>
@@ -205,26 +147,9 @@ export default function ProductsModal({
           </select>
 
           {/* ✅ Campo condicional */}
-          {formData.category === "others" && (
-            <input
-              name="other_category"
-              value={formData.other_category}
-              onChange={handleChange}
-              type="text"
-              placeholder="Qual a outra categoria?"
-              className="border p-2 rounded-md border-[#ccc]"
-              required
-              autoFocus
-            />
-          )}
+          {formData.category === "others" && <input name="other_category" value={formData.other_category} onChange={handleChange} type="text" placeholder="Qual a outra categoria?" className="border p-2 rounded-md border-[#ccc]" required autoFocus />}
 
-          <input
-            name="expiration_date"
-            value={formData.expiration_date}
-            onChange={handleChange}
-            className="border p-2 rounded-md border-[#ccc]"
-            type="date"
-          />
+          <input name="expiration_date" value={formData.expiration_date} onChange={handleChange} className="border p-2 rounded-md border-[#ccc]" type="date" />
 
           <button
             type="submit"
@@ -233,24 +158,12 @@ export default function ProductsModal({
                        self-center text-white hover:bg-emerald-400 
                        disabled:bg-gray-400 transition-colors"
           >
-            {loading
-              ? "Enviando..."
-              : editingProduct
-                ? "Atualizar Produto"
-                : "Cadastrar Produto"}
+            {loading ? "Enviando..." : editingProduct ? "Atualizar Produto" : "Cadastrar Produto"}
           </button>
         </form>
 
         {/* ✅ Mensagem dinâmica */}
-        {message && (
-          <p
-            className={`text-center mt-2 ${
-              message.includes("Erro") ? "text-red-500" : "text-emerald-600"
-            }`}
-          >
-            {message}
-          </p>
-        )}
+        {message && <p className={`text-center mt-2 ${message.includes("Erro") ? "text-red-500" : "text-emerald-600"}`}>{message}</p>}
       </div>
     </div>
   );

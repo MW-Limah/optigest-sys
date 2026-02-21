@@ -11,26 +11,14 @@ const ProductController = {
 
   // Criar um novo produto
   async store(req, res) {
-    const {
-      name,
-      cod_bar,
-      description,
-      quantity,
-      category,
-      expiration_date,
-      image,
-    } = req.body;
+    const { name, cod_bar, description, quantity, category, expiration_date, image } = req.body;
     const sql = `INSERT INTO products (name, cod_bar, description, quantity, category, expiration_date, image) 
                      VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
-    db.run(
-      sql,
-      [name, cod_bar, description, quantity, category, expiration_date, image],
-      function (err) {
-        if (err) return res.status(400).json({ error: err.message });
-        res.status(201).json({ id: this.lastID }); // 'this.lastID' retorna o ID gerado
-      },
-    );
+    db.run(sql, [name, cod_bar, description, quantity, category, expiration_date, image], function (err) {
+      if (err) return res.status(400).json({ error: err.message });
+      res.status(201).json({ id: this.lastID }); // 'this.lastID' retorna o ID gerado
+    });
   },
 
   // Buscar por ID
@@ -38,8 +26,7 @@ const ProductController = {
     const { id } = req.params;
     db.get("SELECT * FROM products WHERE id = ?", [id], (err, row) => {
       if (err) return res.status(500).json({ error: err.message });
-      if (!row)
-        return res.status(404).json({ message: "Produto não encontrado" });
+      if (!row) return res.status(404).json({ message: "Produto não encontrado" });
       res.json(row);
     });
   },
@@ -64,18 +51,9 @@ const ProductController = {
   },
 
   // Atualizar items
-
   async update(req, res) {
     const { id } = req.params;
-    const {
-      name,
-      cod_bar,
-      description,
-      quantity,
-      category,
-      expiration_date,
-      image,
-    } = req.body;
+    const { name, cod_bar, description, quantity, category, expiration_date, image } = req.body;
 
     const sql = `UPDATE products SET 
                   name = ?, 
@@ -87,27 +65,14 @@ const ProductController = {
                   image = ? 
                 WHERE id = ?`;
 
-    db.run(
-      sql,
-      [
-        name,
-        cod_bar,
-        description,
-        quantity,
-        category,
-        expiration_date,
-        image,
-        id,
-      ],
-      function (err) {
-        if (err) return res.status(400).json({ error: err.message });
-        if (this.changes === 0) {
-          return res.status(404).json({ message: "Produto não encontrado" });
-        }
+    db.run(sql, [name, cod_bar, description, quantity, category, expiration_date, image, id], function (err) {
+      if (err) return res.status(400).json({ error: err.message });
+      if (this.changes === 0) {
+        return res.status(404).json({ message: "Produto não encontrado" });
+      }
 
-        res.json({ message: "Produto atualizado com sucesso!" });
-      },
-    );
+      res.json({ message: "Produto atualizado com sucesso!" });
+    });
   },
 };
 

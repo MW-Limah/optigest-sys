@@ -11,6 +11,8 @@ const ProductController = {
     });
   },
 
+  // APIS
+
   // Criar um novo produto
   async store(req, res) {
     // Agora os dados de texto estão em req.body e o arquivo em req.file
@@ -23,7 +25,14 @@ const ProductController = {
                  VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
     db.run(sql, [name, cod_bar, description, quantity, category, expiration_date, image], function (err) {
-      if (err) return res.status(400).json({ error: err.message });
+      if (err) {
+        if (err.message.includes("UNIQUE constraint failed")) {
+          return res.status(400).json({
+            message: "Produto com este código de barras já está cadastrado!",
+          });
+        }
+        return res.status(400).json({ error: err.message });
+      }
       res.status(201).json({ id: this.lastID });
     });
   },
@@ -61,26 +70,20 @@ const ProductController = {
   // Atualizar items
   async update(req, res) {
     const { id } = req.params;
-    const { name, cod_bar, description, quantity, category, expiration_date } = req.body;
+    const { name, cod_bar, description, quantity, category, expiration_date, image: bodyImage } = req.body;
+    let finalImage = req.file ? req.file.filename : bodyImage;
 
-    // Se um novo arquivo foi enviado, usamos ele.
-    // Caso contrário, precisamos manter a imagem antiga ou tratar conforme sua lógica.
-    let image = req.file ? req.file.filename : req.body.image;
+    const sql = `UPDATE products SET name=?, cod_bar=?, description=?, quantity=?, category=?, expiration_date=?, image=? WHERE id=?`;
 
-    const sql = `UPDATE products SET 
-                  name = ?, 
-                  cod_bar = ?, 
-                  description = ?, 
-                  quantity = ?, 
-                  category = ?, 
-                  expiration_date = ?, 
-                  image = ? 
-                WHERE id = ?`;
-
-    db.run(sql, [name, cod_bar, description, quantity, category, expiration_date, image, id], function (err) {
-      if (err) return res.status(400).json({ error: err.message });
-      if (this.changes === 0) return res.status(404).json({ message: "Produto não encontrado" });
-
+    db.run(sql, [name, cod_bar, description, quantity, category, expiration_date, finalImage, id], function (err) {
+      if (err) {
+        if (err.message.includes("UNIQUE constraint failed")) {
+          return res.status(400).json({
+            message: "Não foi possível atualizar. Este Código de barras já pertence a outro produto.",
+          });
+        }
+        return res.status(500).json({ error: err.message });
+      }
       res.json({ message: "Produto atualizado com sucesso!" });
     });
   },

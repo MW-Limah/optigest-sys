@@ -8,7 +8,7 @@ db.serialize(() => {
     CREATE TABLE IF NOT EXISTS products (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
-    cod_bar TEXT NOT NULL,
+    cod_bar TEXT UNIQUE NOT NULL,
     description TEXT NOT NULL,
     quantity INTEGER,
     category TEXT NOT NULL,

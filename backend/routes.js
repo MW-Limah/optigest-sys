@@ -22,7 +22,7 @@ routes.post("/products", upload.single("image"), ProductController.store);
 routes.put("/products/:id", upload.single("image"), ProductController.update);
 
 // Configuração das rotas para a tabela de Fornecedores
-routes.get("/supliers", SuppliersController.index);
-routes.get("/supliers/:id", SuppliersController.show);
+routes.get("/suppliers", SuppliersController.index);
+routes.get("/suppliers/:id", SuppliersController.show);
 
 module.exports = routes;

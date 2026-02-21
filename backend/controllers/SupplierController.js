@@ -15,7 +15,7 @@ const SupplierController = {
     const { name_enterprise, cnpj, address, phone, email, main_contact } = req.body;
 
     // Comando SQL
-    const sql = `INSERT INTO products (name_enterprise, cnpj, address, phone, email, main_contact)
+    const sql = `INSERT INTO suppliers (name_enterprise, cnpj, address, phone, email, main_contact)
           VALUES (?,?,?,?,?,?, )`;
 
     // Rode o comando SQL

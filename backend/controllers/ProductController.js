@@ -11,7 +11,7 @@ const ProductController = {
     });
   },
 
-  // APIS
+  // APIs
 
   // Criar um novo produto
   async store(req, res) {

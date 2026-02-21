@@ -19,6 +19,8 @@ db.serialize(() => {
 );`);
 });
 
+/* Criar tabela para fornecedores */
+
 db.serialize(() => {
   db.run(`
     CREATE TABLE IF NOT EXISTS suppliers (

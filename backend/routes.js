@@ -26,5 +26,6 @@ routes.get("/suppliers", SuppliersController.index);
 routes.get("/suppliers/:id", SuppliersController.show);
 routes.post("/suppliers", SuppliersController.store);
 routes.put("/suppliers/:id", SuppliersController.update);
+routes.delete("/suppliers/:id", SuppliersController.destroy);
 
 module.exports = routes;

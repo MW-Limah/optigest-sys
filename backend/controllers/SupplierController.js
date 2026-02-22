@@ -64,12 +64,22 @@ const SupplierController = {
   async destroy(req, res) {
     const { id } = req.params;
 
-    db.get("SELECT image FROM products WHERE id = ?", [id], (err, row) => {
-      const sql = "DELETE FROM products WHERE id = ?";
-      db.run(sql, [id], function (err) {
-        if (err) return res.status(500).json({ error: err.message });
-        if (this.changes === 0) return res.status(404).json({ message: "Produto não encontrado" });
-        res.json({ message: "Produto deletado com sucesso", id });
+    const sql = "DELETE FROM suppliers WHERE id = ?";
+
+    db.run(sql, [id], function (err) {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+
+      // Nenhuma linha afetada → ID não existe
+      if (this.changes === 0) {
+        return res.status(404).json({
+          message: "Fornecedor não encontrado.",
+        });
+      }
+
+      res.json({
+        message: "Fornecedor removido com sucesso!",
       });
     });
   },

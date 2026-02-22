@@ -3,8 +3,7 @@ const { update } = require("./ProductController");
 
 const SupplierController = {
   // APIs
-
-  // GET
+  // GET ALL
   async index(req, res) {
     db.all("SELECT * FROM suppliers", [], (err, rows) => {
       if (err) return res.status(500).json({ error: err.message });
@@ -59,6 +58,19 @@ const SupplierController = {
         return res.status(500).json({ error: err.message });
       }
       res.json({ message: "Dados do Fornecedor atualizado com sucesso!" });
+    });
+  },
+
+  async destroy(req, res) {
+    const { id } = req.params;
+
+    db.get("SELECT image FROM products WHERE id = ?", [id], (err, row) => {
+      const sql = "DELETE FROM products WHERE id = ?";
+      db.run(sql, [id], function (err) {
+        if (err) return res.status(500).json({ error: err.message });
+        if (this.changes === 0) return res.status(404).json({ message: "Produto não encontrado" });
+        res.json({ message: "Produto deletado com sucesso", id });
+      });
     });
   },
 };

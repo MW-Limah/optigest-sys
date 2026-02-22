@@ -39,6 +39,27 @@ export default function SuppliersModal({ show, setShow, onSupplierAdded, editing
 
   if (!show) return null;
 
+  // ✅ Função de máscara integrada ao handlechange
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "cnpj") {
+      const numericValue = value.replace(/\D/g, ""); // Remove letras
+
+      // Aplica a máscara progressivamente conforme o usuário digita
+      const maskedValue = numericValue
+        .replace(/^(\d{2})(\d)/, "$1.$2")
+        .replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
+        .replace(/\.(\d{3})(\d)/, ".$1/$2")
+        .replace(/(\d{4})(\d)/, "$1-$2")
+        .replace(/(-\d{2})\d+?$/, "$1"); // Limita a 14 números (18 caracteres com máscara)
+
+      setFormData((prev) => ({ ...prev, [name]: maskedValue }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -46,15 +67,12 @@ export default function SuppliersModal({ show, setShow, onSupplierAdded, editing
 
     const isEditing = !!editingSuppliers;
     const url = isEditing ? `http://localhost:3001/suppliers/${editingSuppliers.id}` : `http://localhost:3001/suppliers`;
-
     const method = isEditing ? "PUT" : "POST";
 
     try {
       const response = await fetch(url, {
         method,
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
@@ -62,12 +80,8 @@ export default function SuppliersModal({ show, setShow, onSupplierAdded, editing
 
       if (response.ok) {
         setMessage(isEditing ? "Fornecedor atualizado com sucesso!" : "Fornecedor cadastrado com sucesso!");
-
         onSupplierAdded();
-
-        setTimeout(() => {
-          handleClose();
-        }, 1500);
+        setTimeout(() => handleClose(), 1500);
       } else {
         setMessage(`Erro: ${responseData.message || responseData.error}`);
       }
@@ -84,17 +98,11 @@ export default function SuppliersModal({ show, setShow, onSupplierAdded, editing
     setShow(false);
   };
 
-  // ✅ HandleChange com limpeza inteligente
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
       <div className="fixed flex flex-col gap-4 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-xl shadow-lg w-[600px] h-auto border-2 border-[#ddd]">
         <div className="flex justify-between mb-2">
-          <h2 className="text-xl">{editingSuppliers ? "Editar Fornecedor" : "Cadastro de Fornecedor"}</h2>
+          <h2 className="text-xl font-semibold">{editingSuppliers ? "Editar Fornecedor" : "Cadastro de Fornecedor"}</h2>
           <button onClick={handleClose} className="self-end text-2xl text-gray-500 hover:text-gray-800 transition-colors cursor-pointer">
             <MdClose />
           </button>
@@ -116,6 +124,7 @@ export default function SuppliersModal({ show, setShow, onSupplierAdded, editing
             className="border-1 p-2 rounded-md border-[#ccc]"
             type="text"
             placeholder="00.000.000/0000-00"
+            maxLength={18}
             required
           />
           <input
@@ -146,12 +155,15 @@ export default function SuppliersModal({ show, setShow, onSupplierAdded, editing
             placeholder="Contato Principal. Ex: João Carlos"
             required
           />
-          <button className="bg-emerald-500 rounded-xl font-bold py-3 w-[200px] self-center text-white hover:bg-emerald-400 transition-colors cursor-pointer" type="submit">
+          <button
+            className="bg-emerald-500 rounded-xl font-bold py-3 w-[200px] self-center text-white hover:bg-emerald-400 transition-colors cursor-pointer"
+            type="submit"
+            disabled={loading}
+          >
             {loading ? "Enviando..." : editingSuppliers ? "Atualizar Fornecedor" : "Cadastrar Fornecedor"}
           </button>
         </form>
-        {/* Renderizar mensagem de erro/sucesso dinamicamente */}
-        {message && <p className={`text-center mt-2 ${message.includes("Erro") ? "text-red-500" : "text-emerald-600"}`}>{message}</p>}
+        {message && <p className={`text-center mt-2 font-medium ${message.includes("Erro") ? "text-red-500" : "text-emerald-600"}`}>{message}</p>}
       </div>
     </div>
   );

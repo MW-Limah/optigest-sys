@@ -33,9 +33,12 @@ const SupplierController = {
     // Rode o comando SQL
     db.run(sql, [name_enterprise, cnpj, address, phone, email, main_contact], function (err) {
       if (err) {
-        return res.status(400).json({
-          error: err.message,
-        });
+        if (err.message.includes("UNIQUE constraint failed")) {
+          return res.status(400).json({
+            message: "Fornecedor com este CNPJ já está cadastrado!",
+          });
+        }
+        return res.status(400).json({ error: err.message });
       }
       res.status(201).json({ id: this.lastID });
     });
@@ -52,7 +55,7 @@ const SupplierController = {
       if (err) {
         if (err.message.includes("UNIQUE constraint failed")) {
           return res.status(400).json({
-            message: "Não foi possível cadastrar. Este CNPJ já está cadastrado.",
+            message: "Não foi possível atualizar. Este CNPJ já está cadastrado.",
           });
         }
 

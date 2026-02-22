@@ -57,11 +57,11 @@ export default function Page() {
       <main className="flex-1 py-6 px-10 overflow-y-auto">
         <nav className="flex w-full justify-between items-center mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">Produtos</h1>
-            <p className="text-gray-500">Gerencie seus produtos</p>
+            <h1 className="text-2xl font-bold text-gray-800">Fornecedores</h1>
+            <p className="text-gray-500">Gerencie seus fornecedores</p>
           </div>
           <button onClick={() => setIsModalOpen(true)} className="bg-black text-white px-6 py-2 rounded-md cursor-pointer hover:bg-gray-800 transition-colors shadow-lg">
-            + Produto
+            + Fornecedor
           </button>
         </nav>
         <section>
@@ -69,7 +69,7 @@ export default function Page() {
           <div className="flex gap-6 mb-8 shadow-md">
             <div className="w-full border-b-4 border-black py-8 px-6 bg-white shadow-md rounded-t-xl">
               <p className="text-gray-500 text-sm font-medium">Total de produtos</p>
-              <h2 className="text-3xl font-bold mt-2 text-gray-900">1</h2>
+              <h2 className="text-3xl font-bold mt-2 text-gray-900">{suppliers.length}</h2>
             </div>
           </div>
 

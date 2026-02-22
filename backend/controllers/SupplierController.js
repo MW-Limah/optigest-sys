@@ -48,16 +48,20 @@ const SupplierController = {
 
     const sql = `UPDATE suppliers SET name_enterprise=?, cnpj=?, address=?, phone=?, email=?, main_contact=? WHERE id=?`;
 
-    db.run(sql, [name_enterprise, cnpj, address, phone, email, main_contact, id], function (err) {
+    db.run(sql, [name_enterprise, cnpj, address, phone, email, main_contact], function (err) {
       if (err) {
         if (err.message.includes("UNIQUE constraint failed")) {
           return res.status(400).json({
-            message: "Não foi possível atualizar. Este CNPJ já está cadastrado.",
+            message: "Não foi possível cadastrar. Este CNPJ já está cadastrado.",
           });
         }
-        return res.status(500).json({ error: err.message });
+
+        return res.status(500).json({
+          error: err.message,
+        });
       }
-      res.json({ message: "Dados do Fornecedor atualizado com sucesso!" });
+
+      res.status(201).json({ id: this.lastID });
     });
   },
 

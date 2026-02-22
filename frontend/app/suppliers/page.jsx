@@ -117,7 +117,13 @@ export default function Page() {
             </table>
           </div>
         </section>
-        <SuppliersModal show={isModalOpen} setShow={setIsModalOpen} onProductAdded={fetchSuppliers} editingSuppliers={editingSuppliers} setEditingSuppliers={editingSuppliers} />
+        <SuppliersModal
+          show={isModalOpen}
+          setShow={setIsModalOpen}
+          onSupplierAdded={fetchSuppliers}
+          editingSuppliers={editingSuppliers}
+          setEditingSuppliers={setEditingSuppliers}
+        />
       </main>
     </div>
   );

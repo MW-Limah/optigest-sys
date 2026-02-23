@@ -17,7 +17,7 @@ const ProductsSuppliersController = {
     db.run(sql, [product_id, supplier_id], function (err) {
       if (err) {
         if (err.message.includes("UNIQUE")) {
-          return res.status(409).json({ error: "This supplier is already linked to this product" });
+          return res.status(409).json({ error: "Esse fornecedor já está associado a esse produto." });
         }
         return res.status(500).json({ error: err.message });
       }

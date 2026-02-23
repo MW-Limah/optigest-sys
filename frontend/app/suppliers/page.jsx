@@ -90,12 +90,12 @@ export default function Page() {
               <tbody className="divide-y divide-gray-100">
                 {suppliers.map((supplier) => (
                   <tr key={supplier.id} className="group hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 text-gray-700 font-medium">{supplier.name_enterprise}</td>
-                    <td className="px-6 py-4 text-gray-500 font-mono text-sm">{supplier.cnpj}</td>
+                    <td className="px-6 py-4 text-gray-900 text-sm max-w-xs truncate">{supplier.name_enterprise}</td>
+                    <td className="px-6 py-4 text-gray-500 text-sm max-w-xs truncate">{supplier.cnpj}</td>
                     <td className="px-6 py-4 text-gray-500 text-sm max-w-xs truncate">{supplier.address}</td>
-                    <td className="px-6 py-4 text-gray-700">{supplier.phone}</td>
-                    <td className="px-6 py-4 text-gray-700">{supplier.email}</td>
-                    <td className="px-6 py-4 text-gray-700">{supplier.main_contact}</td>
+                    <td className="px-6 py-4 text-gray-500 text-sm max-w-xs truncate">{supplier.phone}</td>
+                    <td className="px-6 py-4 text-gray-500 text-sm max-w-xs truncate">{supplier.email}</td>
+                    <td className="px-6 py-4 text-gray-900 text-sm max-w-xs truncate">{supplier.main_contact}</td>
                     <td className="px-6 py-4">
                       <div className="flex items-center justify-end gap-3">
                         <button

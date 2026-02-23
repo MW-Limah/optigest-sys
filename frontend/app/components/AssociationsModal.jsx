@@ -77,8 +77,8 @@ export default function AssociationsModal({ show, setShow, product, refresh }) {
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
           {/* Produto */}
           <div className="flex gap-4 items-center bg-gray-50 p-3 rounded-lg border border-gray-200">
-            <div className="w-16 h-16 relative rounded overflow-hidden border">
-              <Image src={product.image ? `http://localhost:3001/uploads/${product.image}` : "/bege.jpg"} fill className="object-cover" alt="Produto" />
+            <div className="w-16 h-16 relative rounded overflow-hidden ">
+              <Image src={product.image ? `http://localhost:3001/uploads/${product.image}` : "/placeholder.jpg"} fill className="object-cover" alt="Produto" />
             </div>
             <div>
               <p className="font-bold text-sm">{product.name}</p>

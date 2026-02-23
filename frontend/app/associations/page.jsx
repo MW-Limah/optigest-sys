@@ -4,7 +4,7 @@
 import Aside from "@/components/Aside";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { FaChevronDown, FaChevronUp, FaBoxOpen } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import AssociationsModal from "../components/AssociationsModal";
 
 function ProductItem({ product, refresh }) {
@@ -37,7 +37,7 @@ function ProductItem({ product, refresh }) {
               <Image src={`http://localhost:3001/uploads/${product.image}`} alt={product.name} fill className="object-cover" />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-gray-400">
-                <FaBoxOpen />
+                <Image src={"/placeholder.jpg"} width={100} height={100} alt="Placeholder" />
               </div>
             )}
           </div>

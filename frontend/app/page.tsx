@@ -35,7 +35,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="flex w-full h-screen bg-gray-100">
+    <div className="flex w-full h-screen bg-gray-100 ">
       <Aside />
 
       <main
@@ -43,6 +43,7 @@ export default function Home() {
           flex-1
           pt-[80px] md:pt-0
           px-4 md:px-10
+          mt-5
           py-6
           overflow-y-auto
         "

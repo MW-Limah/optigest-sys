@@ -5,10 +5,11 @@ const db = new Database(path.join(__dirname, "..", "database.db"));
 db.pragma("foreign_keys = ON");
 db.pragma("journal_mode = WAL");
 
+// --- Tabela de Produtos ---
 try {
   db.exec(`ALTER TABLE products ADD COLUMN price REAL`);
 } catch (err) {
-  // Evita erro caso a coluna já exista
+  // Ignora se a coluna já existir
 }
 
 db.exec(`
@@ -26,6 +27,7 @@ db.exec(`
   )
 `);
 
+// --- Tabela de Fornecedores ---
 db.exec(`
   CREATE TABLE IF NOT EXISTS suppliers (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -40,6 +42,21 @@ db.exec(`
   )
 `);
 
+// --- Tabela de Clientes (Nova) ---
+db.exec(`
+  CREATE TABLE IF NOT EXISTS clients (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    cpf TEXT UNIQUE NOT NULL,
+    phone_number TEXT UNIQUE NOT NULL,
+    email TEXT NOT NULL,
+    address TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  )
+`);
+
+// --- Tabela Intermediária ---
 db.exec(`
   CREATE TABLE IF NOT EXISTS products_suppliers (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -48,9 +65,9 @@ db.exec(`
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UNIQUE (product_id, supplier_id),
-    FOREIGN KEY (product_id) REFERENCES products(id)
+    FOREIGN KEY (product_id) REFERENCES products(id) 
       ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (supplier_id) REFERENCES suppliers(id)
+    FOREIGN KEY (supplier_id) REFERENCES suppliers(id) 
       ON DELETE CASCADE ON UPDATE CASCADE
   )
 `);

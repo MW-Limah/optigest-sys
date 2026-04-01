@@ -65,3 +65,18 @@ UNIQUE (product_id, supplier_id)
 
 | created_at | TIMESTAMP DEFAULT CURRENT_TIMESTAMP |
 | updated_at | TIMESTAMP DEFAULT CURRENT_TIMESTAMP |
+
+### Adicionado por mim, para além do que foi pedido.
+
+#### 4. Tabela 'clients'
+
+| Column       | Type                                |
+| ------------ | ----------------------------------- |
+| id           | INTEGER (PK) AUTOINCREMENT          |
+| name         | TEXT NOT NULL                       |
+| cpf          | TEXT UNIQUE NOT NULL                |
+| phone_number | TEXT UNIQUE NOT NULL                |
+| email        | TEXT NOT NULL                       |
+| address      | TEXT NOT NULL                       |
+| created_at   | TIMESTAMP DEFAULT CURRENT_TIMESTAMP |
+| updated_at   | TIMESTAMP DEFAULT CURRENT_TIMESTAMP |

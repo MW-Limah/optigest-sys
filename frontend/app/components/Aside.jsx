@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaHome, FaTruckLoading, FaBoxes, FaShoppingCart } from "react-icons/fa";
 import { FaPeopleCarryBox } from "react-icons/fa6";
+import { IoPeopleSharp } from "react-icons/io5";
 import { motion } from "framer-motion";
 
 const pages = [
@@ -12,6 +13,7 @@ const pages = [
   { page: "/products", icon: FaBoxes, label: "Produtos" },
   { page: "/suppliers", icon: FaTruckLoading, label: "Fornecedores" },
   { page: "/associations", icon: FaPeopleCarryBox, label: "Vínculo de Produtos" },
+  { page: "/clients", icon: IoPeopleSharp, label: "Clientes" },
   { page: "/sales", icon: FaShoppingCart, label: "Vendas" },
 ];
 

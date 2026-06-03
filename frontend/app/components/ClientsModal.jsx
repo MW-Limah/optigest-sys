@@ -6,7 +6,7 @@ import { MdClose } from "react-icons/md";
 export default function ClientsModal({ show, setShow, onClientAdded, editingClient, setEditingClient }) {
   const [formData, setFormData] = useState({
     name: "",
-    cpf: "",
+    cpf: "", // Internally maps to NINO until DB update
     phone_number: "",
     email: "",
     address: "",
@@ -15,22 +15,52 @@ export default function ClientsModal({ show, setShow, onClientAdded, editingClie
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  // ✅ Input Masks for CPF and Phone Number
-  const maskCPF = (value) => {
-    return value
-      .replace(/\D/g, "")
-      .replace(/(\d{3})(\d)/, "$1.$2")
-      .replace(/(\d{3})(\d)/, "$1.$2")
-      .replace(/(\d{3})(\d{1,2})/, "$1-$2")
-      .replace(/(-\d{2})\d+?$/, "$1");
+  const maskNINO = (value) => {
+    const raw = value.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
+    let cleanValue = "";
+    for (let i = 0; i < raw.length; i++) {
+      const char = raw[i];
+
+      if (i === 0 || i === 1) {
+        if (/[A-Z]/.test(char)) cleanValue += char;
+      } else if (i >= 2 && i <= 7) {
+        if (/[0-9]/.test(char)) cleanValue += char;
+      } else if (i === 8) {
+        if (/[A-D]/.test(char)) cleanValue += char;
+      }
+    }
+
+    return cleanValue
+      .replace(/^([A-Z]{0,2})/, "$1")
+      .replace(/^([A-Z]{2})(\d{0,2})/, "$1 $2")
+      .replace(/^([A-Z]{2})\s(\d{2})(\d{0,2})/, "$1 $2 $3")
+      .replace(/^([A-Z]{2})\s(\d{2})\s(\d{2})(\d{0,2})/, "$1 $2 $3 $4")
+      .replace(/^([A-Z]{2})\s(\d{2})\s(\d{2})\s(\d{2})([A-Z]{0,1})/, "$1 $2 $3 $4 $5")
+      .trim();
+  };
+
+  // ✅ Official UK NINO Validation
+  const isValidNINO = (nino) => {
+    const clean = nino.replace(/\s/g, "").toUpperCase();
+
+    const forbiddenPrefixes = ["BG", "GB", "NK", "KN", "TN", "NT", "ZZ"];
+
+    if (clean.length !== 9) return false;
+
+    const prefix = clean.substring(0, 2);
+
+    if (forbiddenPrefixes.includes(prefix)) {
+      return false;
+    }
+
+    return /^[A-Z]{2}\d{6}[A-D]$/.test(clean);
   };
 
   const maskPhone = (value) => {
     return value
       .replace(/\D/g, "")
-      .replace(/(\d{2})(\d)/, "($1) $2")
-      .replace(/(\d{5})(\d)/, "$1-$2")
-      .replace(/(-\d{4})\d+?$/, "$1");
+      .replace(/(\d{4})(\d)/, "$1-$2")
+      .replace(/(-\d{6})\d+?$/, "$1");
   };
 
   // ✅ Load data when editing
@@ -60,7 +90,7 @@ export default function ClientsModal({ show, setShow, onClientAdded, editingClie
     const { name, value } = e.target;
     let formattedValue = value;
 
-    if (name === "cpf") formattedValue = maskCPF(value);
+    if (name === "cpf") formattedValue = maskNINO(value);
     if (name === "phone_number") formattedValue = maskPhone(value);
 
     setFormData((prev) => ({ ...prev, [name]: formattedValue }));
@@ -71,6 +101,13 @@ export default function ClientsModal({ show, setShow, onClientAdded, editingClie
     setLoading(true);
     setMessage("");
 
+    // 🛑 Validates NINO structure before submission
+    if (!isValidNINO(formData.cpf)) {
+      setMessage("Error: Invalid National Insurance Number (NINO) format.");
+      setLoading(false);
+      return;
+    }
+
     const isEditing = !!editingClient;
     const url = isEditing ? `/api/clients/${editingClient.id}` : `/api/clients`;
     const method = isEditing ? "PUT" : "POST";
@@ -79,12 +116,12 @@ export default function ClientsModal({ show, setShow, onClientAdded, editingClie
       const response = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData), // Sent directly as JSON
+        body: JSON.stringify(formData), // Continues sending data formatted under 'cpf' key
       });
 
       if (response.ok) {
         setMessage(isEditing ? "Client updated successfully!" : "Client registered successfully!");
-        onClientAdded(); // Reloads the list on the parent page
+        onClientAdded();
 
         setTimeout(() => {
           handleClose();
@@ -123,11 +160,11 @@ export default function ClientsModal({ show, setShow, onClientAdded, editingClie
           />
 
           <input
-            name="cpf"
+            name="cpf" // Trigger matching the state property key
             value={formData.cpf}
             onChange={handleChange}
             type="text"
-            placeholder="CPF (000.000.000-00)"
+            placeholder="NINO (e.g., QQ 12 34 56 A)"
             className="border p-2 rounded-md border-[#ccc] focus:border-emerald-500 outline-none"
             required
           />
@@ -137,7 +174,7 @@ export default function ClientsModal({ show, setShow, onClientAdded, editingClie
             value={formData.phone_number}
             onChange={handleChange}
             type="text"
-            placeholder="Phone Number (00) 00000-0000"
+            placeholder="Phone Number 0000-000000"
             className="border p-2 rounded-md border-[#ccc] focus:border-emerald-500 outline-none"
             required
           />

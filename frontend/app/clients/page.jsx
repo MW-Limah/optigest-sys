@@ -77,7 +77,7 @@ export default function Page() {
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-200">
                   <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">Name</th>
-                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">CPF</th>
+                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">NINO</th>
                   <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">Phone</th>
                   <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">Email</th>
                   <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">Address</th>

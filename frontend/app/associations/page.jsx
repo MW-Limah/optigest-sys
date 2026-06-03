@@ -12,7 +12,7 @@ function ProductItem({ product, refresh }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleUnlink = async (supplier_id) => {
-    if (!window.confirm("Desassociar fornecedor deste produto?")) return;
+    if (!window.confirm("Unlink supplier from this product?")) return;
 
     try {
       const response = await fetch(`/api/products-suppliers/${product.id}/${supplier_id}`, { method: "DELETE" });
@@ -21,10 +21,10 @@ function ProductItem({ product, refresh }) {
         refresh();
       } else {
         const data = await response.json();
-        alert(data.message || "Erro ao desassociar");
+        alert(data.message || "Error unlinking supplier");
       }
     } catch (error) {
-      console.error("Erro ao desassociar:", error);
+      console.error("Error unlinking supplier:", error);
     }
   };
 
@@ -44,7 +44,7 @@ function ProductItem({ product, refresh }) {
 
           <div>
             <h3 className="font-bold text-gray-800">{product.name}</h3>
-            <p className="text-sm text-gray-500 font-mono">EAN: {product.cod_bar}</p>
+            <p className="text-sm text-gray-500 font-mono">SKU/Barcode: {product.cod_bar}</p>
           </div>
 
           <p className="product-item-desc text-sm text-gray-600 truncate max-w-xs ml-8">{product.description}</p>
@@ -52,7 +52,7 @@ function ProductItem({ product, refresh }) {
 
         <div className="product-item-actions flex items-center gap-4">
           <button onClick={() => setIsModalOpen(true)} className="bg-black text-white px-4 py-1.5 rounded-xl text-sm hover:bg-gray-800 transition-colors whitespace-nowrap">
-            Editar Fornecedores
+            Edit Suppliers
           </button>
 
           <button onClick={() => setIsOpen(!isOpen)} className="p-2 text-gray-500 hover:bg-gray-200 rounded-full flex-shrink-0">
@@ -63,7 +63,7 @@ function ProductItem({ product, refresh }) {
 
       {isOpen && (
         <div className="bg-gray-50 py-4 border-t border-gray-100">
-          <h4 className="text-xs font-bold uppercase text-gray-400 mb-3 ml-4">Fornecedores Associados</h4>
+          <h4 className="text-xs font-bold uppercase text-gray-400 mb-3 ml-4">Associated Suppliers</h4>
 
           {product.suppliers.length > 0 ? (
             <ul className="space-y-2 px-4">
@@ -72,13 +72,13 @@ function ProductItem({ product, refresh }) {
                   <span className="flex-1 font-medium text-gray-700 mr-2">{sup.name}</span>
                   <span className="text-sm text-gray-500 font-mono mr-2">{sup.cnpj}</span>
                   <button onClick={() => handleUnlink(sup.id)} className="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600 text-sm font-bold flex-shrink-0">
-                    Desassociar
+                    Unlink
                   </button>
                 </li>
               ))}
             </ul>
           ) : (
-            <p className="text-sm text-gray-400 italic ml-4">Nenhum fornecedor vinculado.</p>
+            <p className="text-sm text-gray-400 italic ml-4">No suppliers linked.</p>
           )}
         </div>
       )}
@@ -97,7 +97,7 @@ export default function Page() {
       const data = await response.json();
       setProducts(data);
     } catch (error) {
-      console.error("Erro ao buscar associações:", error);
+      console.error("Error fetching associations:", error);
     }
   };
 
@@ -114,18 +114,18 @@ export default function Page() {
 
       <main className="flex-1 py-6 px-10 overflow-y-auto">
         <nav className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-800">Vínculo de Produto</h1>
-          <p className="text-gray-500">Vincule produtos aos fornecedores</p>
+          <h1 className="text-2xl font-bold text-gray-800">Product Linking</h1>
+          <p className="text-gray-500">Link products to suppliers</p>
         </nav>
 
         <div className="assoc-stats-grid grid grid-cols-2 gap-6 mb-8">
           <div className="border-b-4 border-black border-emerald-500 py-8 px-6 bg-white shadow-md rounded-t-xl">
-            <p className="text-gray-500 text-sm">Produtos Vinculados</p>
+            <p className="text-gray-500 text-sm">Linked Products</p>
             <h2 className="text-3xl font-bold mt-2 text-emerald-500">{associatedCount}</h2>
           </div>
 
           <div className="border-b-4 border-yellow-500 py-8 px-6 bg-white shadow-md rounded-t-xl">
-            <p className="text-gray-500 text-sm">Sem Vínculo</p>
+            <p className="text-gray-500 text-sm">Not Linked</p>
             <h2 className="text-3xl mt-2 text-yellow-500 font-bold">{notAssociatedCount}</h2>
           </div>
         </div>

@@ -26,7 +26,7 @@ export default function Page() {
       const data = await response.json();
       setProducts(data);
     } catch (error) {
-      console.error("Erro ao buscar produtos:", error);
+      console.error("Error to fetch products:", error);
     }
   };
 
@@ -36,7 +36,7 @@ export default function Page() {
   }, []);
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Tem certeza que deseja excluir este produto?")) return;
+    if (!window.confirm("Are you sure you want to delete this product?")) return;
 
     try {
       const response = await fetch(`/api/products/${id}`, {
@@ -44,14 +44,14 @@ export default function Page() {
       });
 
       if (response.ok) {
-        alert("Produto removido!");
+        alert("Product successfully removed!");
         setProducts((prev) => prev.filter((product) => product.id !== id));
       } else {
         const data = await response.json();
-        alert(`Erro: ${data.message}`);
+        alert(`Error: ${data.message}`);
       }
     } catch (error) {
-      console.error("Erro ao deletar:", error);
+      console.error("Error to delete this product:", error);
     }
   };
 
@@ -61,17 +61,17 @@ export default function Page() {
       <main className="flex-1 py-6 px-10 overflow-y-auto">
         <nav className="page-nav flex w-full justify-between items-center mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">Produtos</h1>
-            <p className="text-gray-500">Gerencie seus produtos</p>
+            <h1 className="text-2xl font-bold text-gray-800">Products</h1>
+            <p className="text-gray-500">Manage your products</p>
           </div>
           <button onClick={() => setIsModalOpen(true)} className="bg-black text-white px-6 py-2 rounded-md hover:bg-gray-800 transition-colors shadow-lg">
-            + Produto
+            Add Products
           </button>
         </nav>
         <section>
           <div className="flex gap-6 mb-8 shadow-md">
             <div className="w-full border-b-4 border-black py-8 px-6 bg-white shadow-sm rounded-t-xl">
-              <p className="text-gray-500 text-sm font-medium">Total de produtos</p>
+              <p className="text-gray-500 text-sm font-medium">Total products</p>
               <h2 className="text-3xl font-bold mt-2 text-gray-900">{products.length}</h2>
             </div>
           </div>
@@ -80,15 +80,15 @@ export default function Page() {
             <table className="responsive-table w-full border-collapse">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-200">
-                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">Nome</th>
-                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">Código</th>
-                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">Descrição</th>
-                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">Estoque</th>
-                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">Preço/Unidade</th>
-                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">Categoria</th>
-                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">Validade</th>
-                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">Foto</th>
-                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-right">Ações</th>
+                  <th className="px-4 py-4 text-xs font-bold uppercase text-gray-500 text-left">Name</th>
+                  <th className="px-4 py-4 text-xs font-bold uppercase text-gray-500 text-left">SKU/Barcode</th>
+                  <th className="px-4 py-4 text-xs font-bold uppercase text-gray-500 text-left">Description</th>
+                  <th className="px-4 py-4 text-xs font-bold uppercase text-gray-500 text-left">Stock</th>
+                  <th className="px-4 py-4 text-xs font-bold uppercase text-gray-500 text-left">Price/unit</th>
+                  <th className="px-4 py-4 text-xs font-bold uppercase text-gray-500 text-left">Category</th>
+                  <th className="px-4 py-4 text-xs font-bold uppercase text-gray-500 text-left">Expiration date</th>
+                  <th className="px-4 py-4 text-xs font-bold uppercase text-gray-500 text-left">Image</th>
+                  <th className="px-4 py-4 text-xs font-bold uppercase text-gray-500 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
@@ -129,7 +129,7 @@ export default function Page() {
                           onClick={() => handleEdit(product)}
                           className="bg-black text-white px-4 py-1.5 rounded-xl text-xs font-medium hover:bg-gray-800 transition-all active:scale-95 shadow-sm"
                         >
-                          Editar
+                          Edit
                         </button>
                         <button onClick={() => handleDelete(product.id)} className="text-gray-400 hover:text-red-600 transition-colors p-2">
                           <FaTrash size={18} />

@@ -16,7 +16,7 @@ export default function Page() {
       const data = await response.json();
       setSuppliers(data);
     } catch (error) {
-      console.error("Erro ao buscar fornecedores: ", error);
+      console.error("Error fetching suppliers: ", error);
     }
   };
 
@@ -26,21 +26,21 @@ export default function Page() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Tem certeza que deseja excluir esse fornecedor?")) return;
+    if (!window.confirm("Are you sure you want to delete this supplier?")) return;
     try {
       const response = await fetch(`/api/suppliers/${id}`, {
         method: "DELETE",
       });
 
       if (response.ok) {
-        alert("Fornecedor removido!");
+        alert("Supplier removed!");
         setSuppliers((prev) => prev.filter((s) => s.id !== id));
       } else {
         const data = await response.json();
-        alert(`Erro: ${data.message}`);
+        alert(`Error: ${data.message}`);
       }
     } catch (error) {
-      console.error("Erro ao deletar", error);
+      console.error("Error deleting supplier:", error);
     }
   };
 
@@ -55,17 +55,17 @@ export default function Page() {
       <main className="flex-1 py-6 px-10 overflow-y-auto">
         <nav className="page-nav flex w-full justify-between items-center mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">Fornecedores</h1>
-            <p className="text-gray-500">Gerencie seus fornecedores</p>
+            <h1 className="text-2xl font-bold text-gray-800">Suppliers</h1>
+            <p className="text-gray-500">Manage your suppliers</p>
           </div>
           <button onClick={() => setIsModalOpen(true)} className="bg-black text-white px-6 py-2 rounded-md cursor-pointer hover:bg-gray-800 transition-colors shadow-lg">
-            + Fornecedor
+            + Supplier
           </button>
         </nav>
         <section>
           <div className="flex gap-6 mb-8 shadow-md  rounded-t-xl">
             <div className="w-full border-b-4 border-black py-8 px-6 bg-white shadow-md rounded-t-xl">
-              <p className="text-gray-500 text-sm font-medium">Total de fornecedores</p>
+              <p className="text-gray-500 text-sm font-medium">Total Suppliers</p>
               <h2 className="text-3xl font-bold mt-2 text-gray-900">{suppliers.length}</h2>
             </div>
           </div>
@@ -74,34 +74,34 @@ export default function Page() {
             <table className="responsive-table w-full border-collapse">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-200">
-                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">Nome da Empresa</th>
+                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">Company Name</th>
                   <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">CNPJ</th>
-                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">Endereço</th>
-                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">Telefone</th>
-                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">E-mail</th>
-                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">Contato Principal</th>
-                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-right">Ações</th>
+                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">Address</th>
+                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">Phone</th>
+                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">Email</th>
+                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-left">Main Contact</th>
+                  <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
                 {suppliers.map((supplier) => (
                   <tr key={supplier.id} className="group hover:bg-gray-50 transition-colors">
-                    <td data-label="Empresa" className="px-6 py-4 text-gray-900 text-sm font-medium">
+                    <td data-label="Company" className="px-6 py-4 text-gray-900 text-sm font-medium">
                       {supplier.name_enterprise}
                     </td>
                     <td data-label="CNPJ" className="px-6 py-4 text-gray-500 text-sm font-mono">
                       {supplier.cnpj}
                     </td>
-                    <td data-label="Endereço" className="px-6 py-4 text-gray-500 text-sm max-w-xs truncate">
+                    <td data-label="Address" className="px-6 py-4 text-gray-500 text-sm max-w-xs truncate">
                       {supplier.address}
                     </td>
-                    <td data-label="Telefone" className="px-6 py-4 text-gray-500 text-sm">
+                    <td data-label="Phone" className="px-6 py-4 text-gray-500 text-sm">
                       {supplier.phone}
                     </td>
-                    <td data-label="E-mail" className="px-6 py-4 text-gray-500 text-sm">
+                    <td data-label="Email" className="px-6 py-4 text-gray-500 text-sm">
                       {supplier.email}
                     </td>
-                    <td data-label="Contato" className="px-6 py-4 text-gray-900 text-sm">
+                    <td data-label="Contact" className="px-6 py-4 text-gray-900 text-sm">
                       {supplier.main_contact}
                     </td>
                     <td className="px-6 py-4">
@@ -110,7 +110,7 @@ export default function Page() {
                           onClick={() => handleEdit(supplier)}
                           className="bg-black text-white px-4 py-1.5 rounded-xl text-xs font-medium hover:bg-gray-800 transition-all active:scale-95 shadow-sm"
                         >
-                          Editar dados
+                          Edit details
                         </button>
                         <button onClick={() => handleDelete(supplier.id)} className="text-gray-400 hover:text-red-600 transition-colors p-2">
                           <FaTrash size={20} />

@@ -11,8 +11,8 @@ const geistSans = Josefin_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "OptiGest",
-  description: "Sistema de Controle de Estoque",
+  title: "BizOps",
+  description: "Inventory Control Operation",
 };
 
 export default function RootLayout({

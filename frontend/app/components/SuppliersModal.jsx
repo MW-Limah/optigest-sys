@@ -41,7 +41,7 @@ export default function SuppliersModal({ show, setShow, onSupplierAdded, editing
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const numericValue = value.replace(/\D/g, ""); // Remover tudo que não é número
+    const numericValue = value.replace(/\D/g, ""); // Remove everything that is not a number
 
     let maskedValue = value;
 
@@ -52,22 +52,22 @@ export default function SuppliersModal({ show, setShow, onSupplierAdded, editing
         .replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
         .replace(/\.(\d{3})(\d)/, ".$1/$2")
         .replace(/(\d{4})(\d)/, "$1-$2")
-        .replace(/(-\d{2})\d+?$/, "$1"); // Limitar a 18 digitos
+        .replace(/(-\d{2})\d+?$/, "$1"); // Limit to 18 characters
     } else if (name === "phone") {
       /* (00) 00000-0000 */
       maskedValue = numericValue
-        .replace(/^(\d{2})(\d)/g, "($1) $2") // Coloca parênteses no DDD
-        .replace(/(\d{5})(\d)/, "$1-$2") // Coloca o hífen após o 5º dígito
-        .replace(/(-\d{4})\d+?$/, "$1"); // Limitar a 11 digitos
+        .replace(/^(\d{2})(\d)/g, "($1) $2") // Adds parentheses to the area code
+        .replace(/(\d{5})(\d)/, "$1-$2") // Adds the hyphen after the 5th digit
+        .replace(/(-\d{4})\d+?$/, "$1"); // Limit to 11 digits
     } else if (name === "email") {
       /* email@gmail.com */
-      // no caso, letras e numeros separados por letras + ponto + letras
+      // In this case, letters and numbers separated by letters + dot + letters
       maskedValue = value
         .toLowerCase()
         .replace(/\s/g, "")
         .replace(/[^a-z0-9._\-@+]/g, "");
 
-      // Impedir mais de um @
+      // Prevent more than one @ symbol
       const parts = maskedValue.split("@");
       if (parts.length > 2) {
         maskedValue = parts[0] + "@" + parts.slice(1).join("");
@@ -95,15 +95,15 @@ export default function SuppliersModal({ show, setShow, onSupplierAdded, editing
       const responseData = await response.json();
 
       if (response.ok) {
-        setMessage(isEditing ? "Fornecedor atualizado com sucesso!" : "Fornecedor cadastrado com sucesso!");
+        setMessage(isEditing ? "Supplier updated successfully!" : "Supplier registered successfully!");
         onSupplierAdded();
         setTimeout(() => handleClose(), 1500);
       } else {
-        setMessage(`Erro: ${responseData.message || responseData.error}`);
+        setMessage(`Error: ${responseData.message || responseData.error}`);
       }
     } catch (error) {
-      console.error("Erro na operação:", error);
-      setMessage("Erro de conexão com o servidor.");
+      console.error("Operation error:", error);
+      setMessage("Server connection error.");
     } finally {
       setLoading(false);
     }
@@ -118,7 +118,7 @@ export default function SuppliersModal({ show, setShow, onSupplierAdded, editing
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
       <div className="modal-box fixed flex flex-col gap-4 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-xl shadow-lg w-[600px] h-auto border-2 border-[#ddd]">
         <div className="flex justify-between mb-2">
-          <h2 className="text-xl font-semibold">{editingSuppliers ? "Editar Fornecedor" : "Cadastro de Fornecedor"}</h2>
+          <h2 className="text-xl font-semibold">{editingSuppliers ? "Edit Supplier" : "Supplier Registration"}</h2>
           <button onClick={handleClose} className="self-end text-2xl text-gray-500 hover:text-gray-800 transition-colors cursor-pointer">
             <MdClose />
           </button>
@@ -130,7 +130,7 @@ export default function SuppliersModal({ show, setShow, onSupplierAdded, editing
             onChange={handleChange}
             className="border-1 p-2 rounded-md border-[#ccc]"
             type="text"
-            placeholder="Insira o nome da empresa"
+            placeholder="Enter the company name"
             required
           />
           <input
@@ -149,7 +149,7 @@ export default function SuppliersModal({ show, setShow, onSupplierAdded, editing
             onChange={handleChange}
             className="border-1 p-2 rounded-md border-[#ccc]"
             type="text"
-            placeholder="Insira o endereço completo da empresa"
+            placeholder="Enter the complete company address"
             required
           />
           <input name="phone" value={formData.phone} onChange={handleChange} className="border-1 p-2 rounded-md border-[#ccc]" type="tel" placeholder="(00) 00000-0000" required />
@@ -159,7 +159,7 @@ export default function SuppliersModal({ show, setShow, onSupplierAdded, editing
             onChange={handleChange}
             className="border-1 p-2 rounded-md border-[#ccc]"
             type="email"
-            placeholder="exemplo@fornecedor.com"
+            placeholder="example@supplier.com"
             required
           />
           <input
@@ -168,7 +168,7 @@ export default function SuppliersModal({ show, setShow, onSupplierAdded, editing
             onChange={handleChange}
             className="border-1 p-2 rounded-md border-[#ccc]"
             type="text"
-            placeholder="Contato Principal. Ex: João Carlos"
+            placeholder="Main Contact. E.g., John Doe"
             required
           />
           <button
@@ -176,10 +176,10 @@ export default function SuppliersModal({ show, setShow, onSupplierAdded, editing
             type="submit"
             disabled={loading}
           >
-            {loading ? "Enviando..." : editingSuppliers ? "Atualizar Fornecedor" : "Cadastrar Fornecedor"}
+            {loading ? "Sending..." : editingSuppliers ? "Update Supplier" : "Register Supplier"}
           </button>
         </form>
-        {message && <p className={`text-center mt-2 font-medium ${message.includes("Erro") ? "text-red-500" : "text-emerald-600"}`}>{message}</p>}
+        {message && <p className={`text-center mt-2 font-medium ${message.includes("Error") ? "text-red-500" : "text-emerald-600"}`}>{message}</p>}
       </div>
     </div>
   );

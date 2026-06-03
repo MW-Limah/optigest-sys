@@ -25,7 +25,7 @@ export default function ProductsModal({ show, setShow, onProductAdded, editingPr
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  // ✅ Formatação de moeda
+  // ✅ Currency formatting
   const formatCurrency = (value) => {
     if (!value) return "";
 
@@ -38,7 +38,7 @@ export default function ProductsModal({ show, setShow, onProductAdded, editingPr
     });
   };
 
-  // ✅ Handle específico do preço
+  // ✅ Specific handler for price
   const handlePriceChange = (e) => {
     const formatted = formatCurrency(e.target.value);
 
@@ -48,7 +48,7 @@ export default function ProductsModal({ show, setShow, onProductAdded, editingPr
     }));
   };
 
-  // ✅ Carregar dados ao editar
+  // ✅ Load data when editing
   useEffect(() => {
     if (editingProduct) {
       setFormData({
@@ -97,7 +97,7 @@ export default function ProductsModal({ show, setShow, onProductAdded, editingPr
     data.append("category", finalCategory);
     data.append("expiration_date", formData.expiration_date);
 
-    // ✅ Converter preço para número
+    // ✅ Convert price to number
     const rawPrice = formData.price.replace("R$", "").replace(/\./g, "").replace(",", ".").trim();
 
     data.append("price", rawPrice);
@@ -120,7 +120,7 @@ export default function ProductsModal({ show, setShow, onProductAdded, editingPr
       });
 
       if (response.ok) {
-        setMessage(isEditing ? "Produto atualizado com sucesso!" : "Produto cadastrado com sucesso!");
+        setMessage(isEditing ? "Product updated successfully!" : "Product registered successfully!");
 
         onProductAdded();
         setSelectedFile(null);
@@ -130,11 +130,11 @@ export default function ProductsModal({ show, setShow, onProductAdded, editingPr
         }, 1500);
       } else {
         const errorData = await response.json();
-        setMessage(`Erro: ${errorData.message || errorData.error}`);
+        setMessage(`Error: ${errorData.message || errorData.error}`);
       }
     } catch (error) {
-      console.error("Erro na operação:", error);
-      setMessage("Erro de conexão com o servidor.");
+      console.error("Operation error:", error);
+      setMessage("Server connection error.");
     } finally {
       setLoading(false);
     }
@@ -164,7 +164,7 @@ export default function ProductsModal({ show, setShow, onProductAdded, editingPr
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
       <div className="modal-box fixed flex flex-col gap-4 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-xl shadow-lg w-[600px] border-2 border-[#ddd]">
         <div className="flex justify-between mb-2">
-          <h2 className="text-xl">{editingProduct ? "Editar Produto" : "Cadastrar novo Produto"}</h2>
+          <h2 className="text-xl">{editingProduct ? "Edit Product" : "Register new Product"}</h2>
 
           <button onClick={handleClose} className="text-2xl text-gray-500 hover:text-gray-800 transition-colors">
             <MdClose />
@@ -172,17 +172,9 @@ export default function ProductsModal({ show, setShow, onProductAdded, editingPr
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <input name="name" value={formData.name} onChange={handleChange} className="border p-2 rounded-md border-[#ccc]" type="text" placeholder="Nome do Produto" required />
+          <input name="name" value={formData.name} onChange={handleChange} className="border p-2 rounded-md border-[#ccc]" type="text" placeholder="Product Name" required />
 
-          <input
-            name="cod_bar"
-            value={formData.cod_bar}
-            onChange={handleChange}
-            type="number"
-            placeholder="Código de Barras"
-            className="border p-2 rounded-md border-[#ccc]"
-            required
-          />
+          <input name="cod_bar" value={formData.cod_bar} onChange={handleChange} type="number" placeholder="Barcode" className="border p-2 rounded-md border-[#ccc]" required />
 
           <input
             name="description"
@@ -191,38 +183,30 @@ export default function ProductsModal({ show, setShow, onProductAdded, editingPr
             maxLength={100}
             className="border p-2 rounded-md border-[#ccc]"
             type="text"
-            placeholder="Descrição"
+            placeholder="Description"
           />
 
-          <input
-            name="quantity"
-            value={formData.quantity}
-            onChange={handleChange}
-            className="border p-2 rounded-md border-[#ccc]"
-            type="number"
-            placeholder="Quantidade"
-            required
-          />
+          <input name="quantity" value={formData.quantity} onChange={handleChange} className="border p-2 rounded-md border-[#ccc]" type="number" placeholder="Quantity" required />
 
-          {/* 💰 PREÇO */}
+          {/* 💰 PRICE */}
           <input
             name="price"
             value={formData.price}
             onChange={handlePriceChange}
             type="text"
-            placeholder="Preço (R$ 0,00)"
+            placeholder="Price (R$ 0.00)"
             className="border p-2 rounded-md border-[#ccc]"
             required
           />
 
           <select name="category" value={formData.category} onChange={handleChange} className="border p-2 rounded-md border-[#ccc] bg-white" required>
             <option value="" disabled>
-              Selecione uma categoria
+              Select a category
             </option>
-            <option value="Eletrônicos">Eletrônicos</option>
-            <option value="Alimentos">Alimentos</option>
-            <option value="Vestuário">Vestuário</option>
-            <option value="others">Outros</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Food & Beverages">Food & Beverages</option>
+            <option value="Clothing">Clothing</option>
+            <option value="others">Others</option>
           </select>
 
           {formData.category === "others" && (
@@ -231,7 +215,7 @@ export default function ProductsModal({ show, setShow, onProductAdded, editingPr
               value={formData.other_category}
               onChange={handleChange}
               type="text"
-              placeholder="Outra categoria"
+              placeholder="Other category"
               className="border p-2 rounded-md border-[#ccc]"
               required
             />
@@ -242,11 +226,11 @@ export default function ProductsModal({ show, setShow, onProductAdded, editingPr
           <input name="image" type="file" accept="image/*" onChange={handleFileChange} className="border p-2 rounded-md border-[#ccc]" />
 
           <button type="submit" disabled={loading} className="bg-emerald-500 rounded-xl font-bold py-3 w-[200px] self-center text-white hover:bg-emerald-400 disabled:bg-gray-400">
-            {loading ? "Enviando..." : editingProduct ? "Atualizar Produto" : "Cadastrar Produto"}
+            {loading ? "Sending..." : editingProduct ? "Update Product" : "Register Product"}
           </button>
         </form>
 
-        {message && <p className={`text-center mt-2 ${message.includes("Erro") ? "text-red-500" : "text-emerald-600"}`}>{message}</p>}
+        {message && <p className={`text-center mt-2 ${message.includes("Error") ? "text-red-500" : "text-emerald-600"}`}>{message}</p>}
       </div>
     </div>
   );

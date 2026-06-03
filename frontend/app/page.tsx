@@ -21,7 +21,7 @@ export default function Home() {
       const data = await response.json();
       setClients(data);
     } catch (error) {
-      console.error("Erro ao buscar clientes: ", error);
+      console.error("Error searching for clients: ", error);
     }
   };
 
@@ -31,7 +31,7 @@ export default function Home() {
       const data = await response.json();
       setSuppliers(data);
     } catch (error) {
-      console.error("Erro ao buscar fornecedores: ", error);
+      console.error("Error searching for suppliers: ", error);
     }
   };
 
@@ -41,7 +41,7 @@ export default function Home() {
       const data = await response.json();
       setProducts(data);
     } catch (error) {
-      console.error("Erro ao buscar produtos: ", error);
+      console.error("Error searching for products:", error);
     }
   };
 
@@ -57,49 +57,43 @@ export default function Home() {
 
       <main className="flex-1 py-6 px-10 overflow-y-auto">
         <h1 className="text-2xl mb-1 font-bold">Dashboard</h1>
-        <p className="text-gray-600 mb-6">Aqui está a visão geral do seu negócio</p>
+        <p className="text-gray-600 mb-6">Your Business Overview</p>
 
-        {/* Grid ajustado para 3 colunas */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Card: Total de Clientes (Exemplo, já que não estava no seu state) */}
           <div className="py-4 px-6 bg-white shadow-sm rounded-xl border border-gray-200 hover:shadow-md transition-shadow">
             <div className="flex justify-between items-start">
-              <p className="text-gray-600 font-medium">Total de Clientes</p>
+              <p className="text-gray-600 font-medium">Total number of Costumers</p>
               <span className="text-xl">
                 <IoPeopleSharp />
               </span>
             </div>
             <h2 className="text-2xl font-bold mt-4 text-gray-900">{clients.length}</h2>
           </div>
-
-          {/* Card: Receita Total */}
           <div className="py-4 px-6 bg-white shadow-sm rounded-xl border border-gray-200 hover:shadow-md transition-shadow">
             <div className="flex justify-between items-start">
-              <p className="text-gray-600 font-medium">Receita Total Atual</p>
+              <p className="text-gray-600 font-medium">Current Total Revenue</p>
               <span className="text-xl">
                 <MdAttachMoney />
               </span>
             </div>
-            <h2 className="text-2xl font-bold mt-4 text-gray-900">R$ 2.400,00</h2>
-            <p className="text-[10px] text-gray-400 mt-2 text-right">Atualizado em 25/03/2026</p>
+            <h2 className="text-2xl font-bold mt-4 text-gray-900">£ 2.400,00</h2>
+            <p className="text-xs text-gray-400 mt-2 text-right">Updated at 25/03/2026</p>
           </div>
 
-          {/* Card: Produtos */}
           <div className="py-4 px-6 bg-white shadow-sm rounded-xl border border-gray-200 hover:shadow-md transition-shadow">
             <div className="flex justify-between items-start">
-              <p className="text-gray-600 font-medium">Produtos</p>
+              <p className="text-gray-600 font-medium">Products</p>
               <span className="text-xl">
                 <FaBoxes />
               </span>
             </div>
             <h2 className="text-2xl font-bold mt-4 text-gray-900">{products.length}</h2>
-            <p className="text-xs text-gray-400 mt-1">Itens cadastrados</p>
+            <p className="text-xs text-gray-400 mt-2">Registered Products</p>
           </div>
 
-          {/* Card: Total de Vendas */}
           <div className="py-4 px-6 bg-white shadow-sm rounded-xl border border-gray-200 hover:shadow-md transition-shadow">
             <div className="flex justify-between items-start">
-              <p className="text-gray-600 font-medium">Total de Vendas</p>
+              <p className="text-gray-600 font-medium">Sales Volume</p>
               <span className="text-xl">
                 <FaCartShopping />
               </span>
@@ -107,10 +101,9 @@ export default function Home() {
             <h2 className="text-2xl font-bold mt-4 text-gray-900">250</h2>
           </div>
 
-          {/* Card: Fornecedores */}
           <div className="py-4 px-6 bg-white shadow-sm rounded-xl border border-gray-200 hover:shadow-md transition-shadow">
             <div className="flex justify-between items-start">
-              <p className="text-gray-600 font-medium">Fornecedores</p>
+              <p className="text-gray-600 font-medium">Suppliers</p>
               <span className="text-xl">
                 <FaPeopleCarryBox />
               </span>
@@ -118,22 +111,21 @@ export default function Home() {
             <h2 className="text-2xl font-bold mt-4 text-gray-900">{suppliers.length}</h2>
           </div>
 
-          {/* Card: Estoque Baixo */}
           <div className="py-4 px-6 bg-white shadow-sm rounded-xl border border-gray-200 hover:shadow-md transition-shadow flex flex-col justify-between">
             <div className="flex flex-row items-start justify-between">
               <div>
-                <p className="text-gray-600 font-medium">Estoque Baixo</p>
+                <p className="text-gray-600 font-medium">Low Stock</p>
                 <h2 className="text-2xl font-bold mt-2 text-gray-900">2</h2>
               </div>
               <div>
-                <span className="text-xl">
+                <span className="text-xl text-red-500">
                   <FiAlertTriangle />
                 </span>
               </div>
             </div>
             <div className="flex items-center justify-between mt-4 gap-2">
-              <p className="text-[10px] text-gray-400">Você tem produtos com estoque baixo!</p>
-              <button className="bg-black text-white text-xs py-2 px-3 rounded-lg hover:bg-gray-800 transition-colors">Ver produtos</button>
+              <p className="text-xs text-gray-400">You have products with low stock!</p>
+              <button className="bg-black text-white text-xs py-2 px-3 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer">Which products?</button>
             </div>
           </div>
         </div>

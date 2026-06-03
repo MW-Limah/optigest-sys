@@ -85,14 +85,14 @@ export default function SalesChart() {
         <div className="flex flex-col gap-4 mt-12 min-w-[120px]">
           <div className="flex items-center gap-3">
             <span className="w-6 h-6 bg-[#34D399] rounded-[4px]" />
-            <span className="text-sm font-medium">Aumento</span>
+            <span className="text-sm font-medium">Increase</span>
           </div>
           <div className="flex items-center gap-3">
             <span className="w-6 h-6 bg-[#FF6262] rounded-[4px]" />
-            <span className="text-sm font-medium">Redução</span>
+            <span className="text-sm font-medium">Decrease</span>
           </div>
           <div className="mt-4">
-            <p className="text-xs text-gray-700">Moeda: R$ (BRL)</p>
+            <p className="text-xs text-gray-700">Currency: £ (GBP)</p>
           </div>
         </div>
       </div>

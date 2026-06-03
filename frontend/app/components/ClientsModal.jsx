@@ -15,7 +15,7 @@ export default function ClientsModal({ show, setShow, onClientAdded, editingClie
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  // ✅ Máscaras para CPF e Telefone
+  // ✅ Input Masks for CPF and Phone Number
   const maskCPF = (value) => {
     return value
       .replace(/\D/g, "")
@@ -33,7 +33,7 @@ export default function ClientsModal({ show, setShow, onClientAdded, editingClie
       .replace(/(-\d{4})\d+?$/, "$1");
   };
 
-  // ✅ Carregar dados ao editar
+  // ✅ Load data when editing
   useEffect(() => {
     if (editingClient) {
       setFormData({
@@ -79,23 +79,23 @@ export default function ClientsModal({ show, setShow, onClientAdded, editingClie
       const response = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData), // Envio direto como JSON
+        body: JSON.stringify(formData), // Sent directly as JSON
       });
 
       if (response.ok) {
-        setMessage(isEditing ? "Cliente atualizado com sucesso!" : "Cliente cadastrado com sucesso!");
-        onClientAdded(); // Recarrega a lista na página pai
+        setMessage(isEditing ? "Client updated successfully!" : "Client registered successfully!");
+        onClientAdded(); // Reloads the list on the parent page
 
         setTimeout(() => {
           handleClose();
         }, 1500);
       } else {
         const errorData = await response.json();
-        setMessage(`Erro: ${errorData.message || errorData.error}`);
+        setMessage(`Error: ${errorData.message || errorData.error}`);
       }
     } catch (error) {
-      console.error("Erro na operação:", error);
-      setMessage("Erro de conexão com o servidor.");
+      console.error("Operation error:", error);
+      setMessage("Server connection error.");
     } finally {
       setLoading(false);
     }
@@ -105,7 +105,7 @@ export default function ClientsModal({ show, setShow, onClientAdded, editingClie
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
       <div className="modal-box fixed flex flex-col gap-4 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-xl shadow-lg w-[500px] border-2 border-[#ddd]">
         <div className="flex justify-between mb-2">
-          <h2 className="text-xl font-bold text-gray-800">{editingClient ? "Editar Cliente" : "Cadastrar novo Cliente"}</h2>
+          <h2 className="text-xl font-bold text-gray-800">{editingClient ? "Edit Client" : "Register new Client"}</h2>
           <button onClick={handleClose} className="text-2xl text-gray-400 hover:text-gray-800 transition-colors">
             <MdClose />
           </button>
@@ -118,7 +118,7 @@ export default function ClientsModal({ show, setShow, onClientAdded, editingClie
             onChange={handleChange}
             className="border p-2 rounded-md border-[#ccc] focus:border-emerald-500 outline-none"
             type="text"
-            placeholder="Nome Completo"
+            placeholder="Full Name"
             required
           />
 
@@ -137,7 +137,7 @@ export default function ClientsModal({ show, setShow, onClientAdded, editingClie
             value={formData.phone_number}
             onChange={handleChange}
             type="text"
-            placeholder="Telefone (00) 00000-0000"
+            placeholder="Phone Number (00) 00000-0000"
             className="border p-2 rounded-md border-[#ccc] focus:border-emerald-500 outline-none"
             required
           />
@@ -147,7 +147,7 @@ export default function ClientsModal({ show, setShow, onClientAdded, editingClie
             value={formData.email}
             onChange={handleChange}
             type="email"
-            placeholder="E-mail"
+            placeholder="Email Address"
             className="border p-2 rounded-md border-[#ccc] focus:border-emerald-500 outline-none"
             required
           />
@@ -157,7 +157,7 @@ export default function ClientsModal({ show, setShow, onClientAdded, editingClie
             value={formData.address}
             onChange={handleChange}
             type="text"
-            placeholder="Endereço Completo"
+            placeholder="Full Address"
             className="border p-2 rounded-md border-[#ccc] focus:border-emerald-500 outline-none"
             required
           />
@@ -167,11 +167,11 @@ export default function ClientsModal({ show, setShow, onClientAdded, editingClie
             disabled={loading}
             className="bg-emerald-500 rounded-xl font-bold py-3 w-[200px] self-center text-white hover:bg-emerald-400 disabled:bg-gray-400 mt-2 transition-all"
           >
-            {loading ? "Salvando..." : editingClient ? "Atualizar Cliente" : "Cadastrar Cliente"}
+            {loading ? "Saving..." : editingClient ? "Update Client" : "Register Client"}
           </button>
         </form>
 
-        {message && <p className={`text-center font-medium mt-2 ${message.includes("Erro") ? "text-red-500" : "text-emerald-600"}`}>{message}</p>}
+        {message && <p className={`text-center font-medium mt-2 ${message.includes("Error") ? "text-red-500" : "text-emerald-600"}`}>{message}</p>}
       </div>
     </div>
   );

@@ -9,11 +9,11 @@ import { IoPeopleSharp } from "react-icons/io5";
 import { motion } from "framer-motion";
 
 const pages = [
-  { page: "/", icon: FaHome, label: "Visão geral" },
-  { page: "/products", icon: FaBoxes, label: "Produtos" },
-  { page: "/suppliers", icon: FaTruckLoading, label: "Fornecedores" },
-  { page: "/associations", icon: FaPeopleCarryBox, label: "Vínculo de Produtos" },
-  { page: "/clients", icon: IoPeopleSharp, label: "Clientes" },
+  { page: "/", icon: FaHome, label: "Overview" },
+  { page: "/products", icon: FaBoxes, label: "Products" },
+  { page: "/suppliers", icon: FaTruckLoading, label: "Suppliers" },
+  { page: "/associations", icon: FaPeopleCarryBox, label: "Linked products" },
+  { page: "/clients", icon: IoPeopleSharp, label: "Clients" },
 ];
 
 export default function Aside() {
@@ -41,7 +41,7 @@ export default function Aside() {
     >
       {/* Logo (somente desktop/tablet) */}
       <h2 className="hidden md:block text-4xl border-b-2 border-[#ddd] mb-5 pb-3 w-full">
-        <Image className="py-4" src="/logo.png" width={200} height={80} alt="logo" />
+        <Image className="py-4" src="/new_logo.png" width={200} height={80} alt="logo" />
       </h2>
 
       {/* Menu */}

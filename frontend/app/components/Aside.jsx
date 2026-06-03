@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaHome, FaTruckLoading, FaBoxes, FaShoppingCart } from "react-icons/fa";
+import { FaHome, FaTruckLoading, FaBoxes } from "react-icons/fa";
 import { FaPeopleCarryBox } from "react-icons/fa6";
 import { IoPeopleSharp } from "react-icons/io5";
 import { motion } from "framer-motion";
@@ -14,7 +14,6 @@ const pages = [
   { page: "/suppliers", icon: FaTruckLoading, label: "Fornecedores" },
   { page: "/associations", icon: FaPeopleCarryBox, label: "Vínculo de Produtos" },
   { page: "/clients", icon: IoPeopleSharp, label: "Clientes" },
-  { page: "/sales", icon: FaShoppingCart, label: "Vendas" },
 ];
 
 export default function Aside() {

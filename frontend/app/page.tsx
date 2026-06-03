@@ -3,15 +3,27 @@
 
 import { useState, useEffect } from "react";
 import Aside from "@/components/Aside";
-import { FaPeopleGroup, FaCartShopping, FaPeopleCarryBox } from "react-icons/fa6";
+import { FaCartShopping, FaPeopleCarryBox } from "react-icons/fa6";
 import { FiAlertTriangle } from "react-icons/fi";
 import { FaBoxes } from "react-icons/fa";
+import { IoPeopleSharp } from "react-icons/io5";
 import { MdAttachMoney } from "react-icons/md";
 import BarChart from "./components/charts/Bar";
 
 export default function Home() {
   const [suppliers, setSuppliers] = useState([]);
   const [products, setProducts] = useState([]);
+  const [clients, setClients] = useState([]);
+
+  const fetchClients = async () => {
+    try {
+      const response = await fetch("/api/clients");
+      const data = await response.json();
+      setClients(data);
+    } catch (error) {
+      console.error("Erro ao buscar clientes: ", error);
+    }
+  };
 
   const fetchSuppliers = async () => {
     try {
@@ -36,6 +48,7 @@ export default function Home() {
   useEffect(() => {
     fetchSuppliers();
     fetchProducts();
+    fetchClients();
   }, []);
 
   return (
@@ -53,10 +66,10 @@ export default function Home() {
             <div className="flex justify-between items-start">
               <p className="text-gray-600 font-medium">Total de Clientes</p>
               <span className="text-xl">
-                <FaPeopleGroup />
+                <IoPeopleSharp />
               </span>
             </div>
-            <h2 className="text-2xl font-bold mt-4 text-gray-900">15</h2>
+            <h2 className="text-2xl font-bold mt-4 text-gray-900">{clients.length}</h2>
           </div>
 
           {/* Card: Receita Total */}

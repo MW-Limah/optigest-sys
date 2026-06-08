@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Josefin_Sans } from "next/font/google";
 
-// @ts-expect-error:allow side-effect css import without type declarations
 import "./globals.css";
 
 const geistSans = Josefin_Sans({

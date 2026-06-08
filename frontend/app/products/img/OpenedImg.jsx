@@ -8,7 +8,7 @@ export default function OpenedImage({ srcImage, onClose }) {
       <div className="relative w-[90%] h-[80%] max-w-4xl">
         <Image src={srcImage} alt="Imagem aberta" fill className="object-contain" />
         <button className="absolute -top-10 right-0 text-white text-xl font-bold cursor-pointer" onClick={onClose}>
-          Fechar
+          Close
         </button>
       </div>
     </div>
